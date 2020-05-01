@@ -169,7 +169,6 @@ ksql> select * from payments_final emit changes limit 5;
 ```
 Pull queries, check value for a specific payment (snapshot lookup). Pull Query is a Preview feature.
 ```bash
-
 ksql> select * from payments_final where rowkey=1001;
 ksql> exit;
 ```
