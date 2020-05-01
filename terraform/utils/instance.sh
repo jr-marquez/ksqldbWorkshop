@@ -22,7 +22,7 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 # install KSQLDB Demo
-wget ${confluent_ksqdb_demo}
+wget ${confluent_ksqldb_demo}
 unzip master.zip
 chown ec2-user:ec2-user -R /home/ec2-user/confluent-ksqldb-hands-on-workshop/
 rm master.zip
