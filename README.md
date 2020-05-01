@@ -66,6 +66,9 @@ We will ask you before the workshop, if you would like to run on your own enviro
 
 We will have a LUNCH Break for 60 Minutes and the workshop will finish around 3pm.
 
+# IMPORTANT NOTE:
+You work on all labs on the command prompt (cli), but for most ksqldb albs you can also work in the Control Center KSQLDB GUI.
+
 # Stop everything
 Note: By Confluent provisioned Compute VMs will be destroyed at 5pm latest on Workshop day automatically. Outside of cloud compute, please use terraform, to really destroy the environment in the cloud:
 ```bash

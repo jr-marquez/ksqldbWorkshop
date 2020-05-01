@@ -4,8 +4,8 @@ This use case is useful for fleet management. Typically you will calculate EAT (
 ## Load data forst
 ```bash
 # create topic
-docker exec -it workshop-kafka  kafka-topics --create --topic atm_locations --bootstrap-server localhost:9092 
-docker exec -it workshop-kafka  cat /produce-data/atm_locations.json | kafka-console-producer --topic atm_locations --broker-list localhost:9092 
+docker exec -it workshop-kafka  kafka-topics --create --topic atm_locations --bootstrap-server localhost:9092
+docker exec -it workshop-kafka  cat /produce-data/atm_locations.json | kafka-console-producer --topic atm_locations --broker-list localhost:9092
 ```
 Create Streams on topic
 ```bash

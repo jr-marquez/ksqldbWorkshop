@@ -20,6 +20,7 @@ check now in [Control Center](http://localhost:9021) and play aournd in KSQL (in
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> print 'stocktrades' from beginning;
 ````
+
 End Lab 3
 
 [go back to Agenda](../README.md)

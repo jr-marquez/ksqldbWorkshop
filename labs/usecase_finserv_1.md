@@ -1,17 +1,17 @@
 # Finacial services case: Payment Status check
 Data for this use case is loaded via 3 Connectors. Please check.
 We will create a CDC Conenctor and doing event stream processing, enrichment and more...
-Start implementing: Login to ksqlcli
+Start implementing: Login to ksqlcli
 ```bash
-docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
-ksql> show topics;
-ksql> show streams;
+docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
+ksql> show topics;
+ksql> show streams;
 ```
-We can also quickly investigate some data:
+We can also quickly investigate some data:
 ```bash
 ksql> print 'Payment_Instruction'; 
 ```
-to see new incoming events or limit to 3 records
+to see new incoming events or limit to 3 records
 ```bash
 ksql> print 'Payment_Instruction' from beginning limit 3;
 ksql> show properties;
@@ -22,7 +22,7 @@ ksql> create stream payments(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, CUSTID INTE
 ```
 Check your creation with describe and select 
 ```bash
-ksql> describe payments;  
+ksql> describe payments;
 ksql> select * from payments emit changes;
 ```
 Create the other streams
@@ -42,7 +42,7 @@ mysql> exit;
 ```
 Create the connector
 ```bash
-docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
+docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> CREATE SOURCE CONNECTOR source_dbz_mysql WITH (
           'connector.class' = 'io.debezium.connector.mysql.MySqlConnector',
           'database.hostname' = 'mysql',

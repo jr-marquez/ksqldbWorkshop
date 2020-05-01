@@ -26,6 +26,7 @@ ksql> CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
   ksql> output json;
   ksql> SELECT TRANSACTION_PAYLOAD FROM TRANSACTIONS_CACHE_TABLE WHERE ROWKEY='abcd00003|+|2020-04';
 ````
+
 End lab 4
 
 [go back to Agenda](../README.md)

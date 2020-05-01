@@ -1,7 +1,8 @@
 # Use case: Real-time Inventory
+
 Produce Inventory Data into Kafka
 ```bash
-docker exec -it workshop-kafka  cat /produce-data/Inventory.json | kafka-console-producer --topic inventory --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:" 
+docker exec -it workshop-kafka  cat /produce-data/Inventory.json | kafka-console-producer --topic inventory --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
 ```
 consume from inventory
 ```bash
@@ -25,6 +26,7 @@ ksql> select * from inventory_stream_table where rowkey='iPad4';
 ksql> select * from inventory_stream_table where rowkey='iPhoneX';
 ksql> exit;
 ````
+
 End lab5
 
 [go back to Agenda](../README.md)

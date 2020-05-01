@@ -9,7 +9,7 @@ ksql> CREATE STREAM orders_stream ( order_ts VARCHAR, shop VARCHAR, product VARC
           TIMESTAMP='order_ts',
           TIMESTAMP_FORMAT='yyyy-MM-dd''T''HH:mm:ssX');
 ksql> SET 'auto.offset.reset' = 'earliest';
-ksql> select * from orders_stream emit changes;          
+ksql> select * from orders_stream emit changes;
 ```
 Shipments
 ```bash
@@ -34,7 +34,7 @@ ksql> CREATE STREAM shipped_orders AS
 ksql> select * from shipped_orders emit changes;
 ksql> CREATE STREAM shipment_statuses_stream (shipment_id VARCHAR, status VARCHAR, warehouse VARCHAR)
     WITH (KAFKA_TOPIC='shipment_status',
-          VALUE_FORMAT='JSON');      
+          VALUE_FORMAT='JSON');
 You can also try to insert data via `insert statements`
 ```bash
 ksql> INSERT INTO orders (rowkey, order_ts, shop, product, order_placed, total_amount, customer_name) VALUES ("1", '2019-03-29T06:01:18Z', 'Otto', 'iPhoneX','Berlin', 133548.84, 'Mark Mustermann');

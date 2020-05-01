@@ -1,5 +1,5 @@
 # Stock pricing with UDF
-Consider a topic of stock price events that you want to calculate the volume-weighted average price (VWAP) for each event, publishing the result to a new topic. 
+Consider a topic of stock price events that you want to calculate the volume-weighted average price (VWAP) for each event, publishing the result to a new topic.
 There is no built-in function for VWAP, so we'll write a custom KSQL UDF that performs the calculation.
 see [official tutorial](https://kafka-tutorials.confluent.io/udf/ksql.html?_ga=2.223343775.583678155.1587977444-275217082.1587977444)
 
@@ -32,6 +32,7 @@ ksql> CREATE STREAM vwap WITH (kafka_topic = 'vwap', partitions = 1) AS
     EMIT CHANGES;
 ksql> PRINT 'vwap' FROM BEGINNING LIMIT 12;
 ```
+
 End of Lab 2
 
 [go back to Agenda](../README.md)
