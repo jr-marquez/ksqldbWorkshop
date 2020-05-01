@@ -1,0 +1,5 @@
+export TF_VAR_aws_access_key=<ENTER YOUR aws key>
+export TF_VAR_aws_secret_key=<ENTER YOUR aws secret>
+export TF_VAR_aws_region=<ENTER YOUR region>
+export TF_VAR_ssh_key_name=<Enter your sh key name>
+export TF_VAR_instance_count=<Enter your count of instances you want to create>
