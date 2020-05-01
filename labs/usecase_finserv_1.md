@@ -9,7 +9,7 @@ ksql> show streams;
 ```
 We can also quickly investigate some data:
 ```bash
-ksql> print 'Payment_Instruction'; 
+ksql> print 'Payment_Instruction';
 ```
 to see new incoming events or limit to 3 records
 ```bash
@@ -20,7 +20,7 @@ Create Payment Stream
 ```bash
 ksql> create stream payments(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, CUSTID INTEGER, ACCOUNTID INTEGER, AMOUNT BIGINT, BANK VARCHAR) with(kafka_topic='Payment_Instruction', value_format='avro');
 ```
-Check your creation with describe and select 
+Check your creation with describe and select
 ```bash
 ksql> describe payments;
 ksql> select * from payments emit changes;
@@ -133,7 +133,7 @@ ksql> select * from enriched_payments emit changes;
 ```
 Combining the status streams
 ```bash
-ksql> CREATE STREAM payment_statuses AS SELECT payment_id, status, 'AML' as source_system FROM aml_status; 
+ksql> CREATE STREAM payment_statuses AS SELECT payment_id, status, 'AML' as source_system FROM aml_status;
 ksql> INSERT INTO payment_statuses SELECT payment_id, status, 'FUNDS' as source_system FROM funds_status;
 ksql> describe payment_statuses;
 ksql> select * from payment_statuses emit changes;
