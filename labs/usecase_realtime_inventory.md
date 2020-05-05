@@ -25,6 +25,8 @@ ksql> select * from inventory_stream_table emit changes;
 ksql> select * from inventory_stream_table where rowkey='iPad4';
 ksql> select * from inventory_stream_table where rowkey='iPhoneX';
 ksql> describe inventory_stream_table ;
+# Where is topic INVENTORY_STREAM_TABLE and what it is?
+ksql> list topics;
 ksql> exit;
 ````
 Check also the running queries in KSQLDB Gui in Control Center and compare SINK and SOURCE of CTAS_INVENTORY_STREAM_TABLE_5. Is that what you expected?
