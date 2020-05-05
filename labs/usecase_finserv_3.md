@@ -24,7 +24,7 @@ ksql> create stream stocktrades with(kafka_topic='stocktrades', value_format='av
 ksql> select * from stocktrades emit changes limit 20;
 ksql> select userid, sum(quantity*price) as money_invested from stocktrades group by userid emit changes;
 ksql> exit;
-````
+```
 
 End Lab 3
 
