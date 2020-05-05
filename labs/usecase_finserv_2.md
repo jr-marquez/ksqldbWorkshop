@@ -31,6 +31,7 @@ ksql> CREATE STREAM vwap WITH (kafka_topic = 'vwap', partitions = 1) AS
     FROM raw_quotes
     EMIT CHANGES;
 ksql> PRINT 'vwap' FROM BEGINNING LIMIT 12;
+ksql> exit;
 ```
 
 End of Lab 2
