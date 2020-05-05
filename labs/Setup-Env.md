@@ -37,7 +37,7 @@ docker exec -it workshop-kafka  kafka-topics --create --topic transactions --boo
 ```
 
 # Load data
-For some topics we prepared some data files. These files are used to produce data int our topics. Later we will connectors and `INSERT Statements`:
+For some topics we prepared some data files to loaded into Kafka. These files are used to produce data into topics. Later we will also use connectors and `INSERT Statements`:
 ```bash
 # produce data orders
 docker exec -it workshop-kafka  cat /produce-data/orders.json | kafka-console-producer --topic orders --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
