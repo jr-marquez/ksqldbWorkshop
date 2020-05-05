@@ -23,7 +23,7 @@ Create Payment Stream and convert it automatically to AVRO.
 ```bash
 ksql> create stream payments(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, CUSTID INTEGER, ACCOUNTID INTEGER, AMOUNT BIGINT, BANK VARCHAR) with(kafka_topic='Payment_Instruction', value_format='avro');
 ```
-Check your creation with describe and select
+Check your creation with describe and select. You can also use Confluent Control Center for this inspection.
 ```bash
 ksql> describe payments;
 ksql> select * from payments emit changes;
