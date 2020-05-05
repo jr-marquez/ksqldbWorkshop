@@ -16,10 +16,14 @@ curl -s -X PUT -H  "Content-Type:application/json" http://localhost:8083/connect
      "schema.keyfield": "userid"
           }'
 ```          
-check now in [Control Center](http://localhost:9021) and play aournd in KSQL (in cli or in Control Center)
+check now in [Control Center](http://localhost:9021) and play around in KSQL (in cli or in Control Center)
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> print 'stocktrades' from beginning;
+ksql> create stream stocktrades with(kafka_topic='stocktrades', value_format='avro');
+ksql> select * from stocktrades emit changes limit 20;
+ksql> select userid, sum(quantity*price) as money_invested from stocktrades group by userid emit changes;
+ksql> exit;
 ````
 
 End Lab 3
