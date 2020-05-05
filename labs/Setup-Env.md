@@ -49,5 +49,5 @@ docker exec -it workshop-kafka  cat /produce-data/shipment_status.json | kafka-c
 docker exec -it workshop-kafka  cat /produce-data/transactions.json | kafka-console-producer --topic transactions --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
 ```
 
-[go back to Agenda](../README.md)
+[go back to Agenda](https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/blob/master/README.md#hands-on-agenda-and-labs)
 
