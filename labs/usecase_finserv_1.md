@@ -98,6 +98,12 @@ Topic CUSTOMERS_FLAT belongs to Stream CUSTOMERS_FLAT
 ```bash
 ksql> list tables;
 ```
+Check topology of execution stream customer_flat. Is the stream re-partitioned?
+```bash
+ksql> show queries;
+# choose the right query id
+ksql> explain CSAS_CUSTOMERS_FLAT_0;
+```
 Select new table
 ```bash
 ksql> select * from customers emit changes;
