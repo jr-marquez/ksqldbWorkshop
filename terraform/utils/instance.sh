@@ -37,7 +37,6 @@ cd /home/ec2-user/confluent-ksqldb-hands-on-workshop-master/docker/
 PUBIP=`curl http://169.254.169.254/latest/meta-data/public-ipv4`
 SCRIPT1="sed -i 's/CONNECT_REST_ADVERTISED_HOST_NAME: "connect-ext"/CONNECT_REST_ADVERTISED_HOST_NAME: "$PUBIP"/g' docker-compose.yml;"
 SCRIPT2="sed -i 's/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: "http:\/\/localhost:8088"/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: "http:\/\/$PUBIP:8088"/g' docker-compose.yml;"
-PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
 SCRIPT4="sed -i 's/KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:\/\/kafka:29092,PLAINTEXT_HOST:\/\/localhost:9092/KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:\/\/kafka:29092,PLAINTEXT_HOST:\/\/$PUBIP:9092/g' docker-compose.yml;"
 # change docker-compose file with public IP for advertised properties 
 bash -c "$SCRIPT1"
