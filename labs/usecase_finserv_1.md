@@ -26,6 +26,7 @@ ksql> create stream payments(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, CUSTID INTE
 Check your creation with describe and select. You can also use Confluent Control Center for this inspection.
 ```bash
 ksql> describe payments;
+ksql> set 'auto.offset.reset'='earliest';
 ksql> select * from payments emit changes;
 ```
 Create the other streams
