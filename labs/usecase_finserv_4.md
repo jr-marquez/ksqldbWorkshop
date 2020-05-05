@@ -25,7 +25,12 @@ ksql> CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
   ksql> SELECT TRANSACTION_PAYLOAD FROM TRANSACTIONS_CACHE_TABLE WHERE ROWKEY='abcd00003|+|2020-04';
   ksql> output json;
   ksql> SELECT TRANSACTION_PAYLOAD FROM TRANSACTIONS_CACHE_TABLE WHERE ROWKEY='abcd00003|+|2020-04';
-````
+  ksql> spool data.json;
+  ksql> SELECT TRANSACTION_PAYLOAD FROM TRANSACTIONS_CACHE_TABLE WHERE ROWKEY='abcd00003|+|2020-04';
+  ksql> spool off;
+  ksql> exit;
+  docker exec -it workshop-ksqldb-cli cat /data.json
+```
 
 End lab 4
 
