@@ -50,6 +50,14 @@ ksqldb-server1:
  # and change in control-center KALLE KSQLDB App to Port 8089    
       CONTROL_CENTER_KSQL_KALLE_ADVERTISED_URL: "http://localhost:8089"
       CONTROL_CENTER_KSQL_KALLE_URL: "http://ksqldb-server:8089"
+ # as well as depends on in control-center
+ depends_on:
+      - zookeeper
+      - kafka
+      - schema-registry
+      - connect-ext
+      - ksqldb-server
+      - ksqldb-server1
 
 ```
 Now, we run two real ksqldb server.
