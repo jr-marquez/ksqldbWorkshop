@@ -24,8 +24,10 @@ output of our inventory
 ksql> select * from inventory_stream_table emit changes;
 ksql> select * from inventory_stream_table where rowkey='iPad4';
 ksql> select * from inventory_stream_table where rowkey='iPhoneX';
+ksql> describe inventory_stream_table ;
 ksql> exit;
 ````
+Check also the running queries in KSQLDB Gui in Control Center and compare SINK and SOURCE of CTAS_INVENTORY_STREAM_TABLE_5. Is that what you expected?
 
 End lab5
 
