@@ -14,6 +14,9 @@ ksql> print 'Payment_Instruction';
 to see new incoming events or limit to 3 records
 ```bash
 ksql> print 'Payment_Instruction' from beginning limit 3;
+```
+Check the properties set for ksqlDB. What is the `ksql.service.id`?
+```bash
 ksql> show properties;
 ```
 Create Payment Stream
