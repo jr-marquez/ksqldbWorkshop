@@ -58,6 +58,7 @@ ksqldb-server1:
       - connect-ext
       - ksqldb-server
       - ksqldb-server1
+docker-compose up -d
 
 ```
 Now, we run two real ksqldb server.
