@@ -30,7 +30,7 @@ ksql> CREATE STREAM shipped_orders AS
            s.delivery, 
            (s.rowtime - o.rowtime) / 1000 / 60 AS ship_time
     FROM orders_stream o INNER JOIN shipments_stream s
-    WITHIN 7 DAYS
+    WITHIN 30 DAYS
     ON o.rowkey = s.order_id;
 ksql> select * from shipped_orders emit changes;
 ksql> CREATE STREAM shipment_statuses_stream (shipment_id VARCHAR, status VARCHAR, warehouse VARCHAR)
