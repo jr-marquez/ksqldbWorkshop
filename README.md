@@ -33,6 +33,7 @@ For an environment in cloud you need to run following components on your machine
 For an environment on your hardware (Macos):
 * Docker Desktop installed, give Docker 8GB of your RAM
 * curl installed
+
 For Windows Users
 * as well docker Desktop installed
 * Gitbash (Git for windows) installed.
