@@ -122,11 +122,9 @@ check in ksql what was happened
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> set 'auto.offset.reset'='earliest';
 ksql> select * from customers where id=1 emit changes;
-ksql> exit;
 ```
 Enriching Payments with Customer details
 ```bash
-docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> create stream enriched_payments as select
 p.payment_id as payment_id,
 p.custid as customer_id,
