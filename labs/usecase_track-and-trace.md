@@ -39,11 +39,11 @@ ksql> CREATE STREAM shipment_statuses_stream (shipment_id VARCHAR, status VARCHA
 ```
 You can also try to insert data via `insert statements`
 ```bash
-ksql> INSERT INTO orders (rowkey, order_ts, shop, product, order_placed, total_amount, customer_name) VALUES ("1", '2019-03-29T06:01:18Z', 'Otto', 'iPhoneX','Berlin', 133548.84, 'Mark Mustermann');
-ksql> INSERT INTO shipments (rowkey, shipment_id, ship_ts, order_id, delivery) VALUES ('ship-ch83360','ship-ch83360', '2019-03-31T18:13:39Z', "1", 'UPS');
-ksql> INSERT INTO shipment_status (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'in delivery', 'BERLIN');
-ksql> INSERT INTO shipment_status (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'in delivery', 'FRANKFURT');
-ksql> INSERT INTO shipment_status (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'delivered', '@customer');
+ksql> INSERT INTO orders_stream (rowkey, order_ts, shop, product, order_placed, total_amount, customer_name) VALUES ("1", '2019-03-29T06:01:18Z', 'Otto', 'iPhoneX','Berlin', 133548.84, 'Mark Mustermann');
+ksql> INSERT INTO shipments_stream (rowkey, shipment_id, ship_ts, order_id, delivery) VALUES ('ship-ch83360','ship-ch83360', '2019-03-31T18:13:39Z', "1", 'UPS');
+ksql> INSERT INTO shipment_status_stream (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'in delivery', 'BERLIN');
+ksql> INSERT INTO shipment_status_stream (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'in delivery', 'FRANKFURT');
+ksql> INSERT INTO shipment_status_stream (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'delivered', '@customer');
 ksql> select * from shipment_statuses_stream emit changes;
 ```
 symetic update to table (topic behind is compacted unlimited retention)
