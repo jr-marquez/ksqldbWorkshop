@@ -61,7 +61,7 @@ ksqldb-server1:
 docker-compose up -d
 
 ```
-Now, we run two real ksqldb server.
+Now, we run two real ksqldb server. Please have a look [how to scale](https://docs.ksqldb.io/en/latest/operate-and-deploy/capacity-planning/#scaling-ksqldb)
 
 End lab8
 
