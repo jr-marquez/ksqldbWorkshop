@@ -24,10 +24,10 @@ You should see in Control Center
 * a running cluster
 * three connectors are running
 * 1 KSQL APP is running
-* three topics AML_Status, Funds_Status, Payment_Instruction are created
+* three topics AML_Status, Funds_Status, Payment_Instruction are created and some additional internal topics.
 
 # Create additiional topics
-In the terminal (cloud ssetup to be first login via ssh) create additional topics, we use them later in workshop:
+Open your terminal app (cloud setup to be first login via ssh) and create additional topics, we use them later in workshop:
 ```bash
 docker exec -it workshop-kafka  kafka-topics --create --topic orders --bootstrap-server localhost:9092
 docker exec -it workshop-kafka  kafka-topics --create --topic shipments --bootstrap-server localhost:9092
