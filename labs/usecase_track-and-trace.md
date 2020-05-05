@@ -39,14 +39,14 @@ ksql> CREATE STREAM shipment_statuses_stream (shipment_id VARCHAR, status VARCHA
 ```
 You can also try to insert data via `insert statements`
 ```bash
-ksql> INSERT INTO orders_stream (rowkey, order_ts, shop, product, order_placed, total_amount, customer_name) VALUES ("1", '2019-03-29T06:01:18Z', 'Otto', 'iPhoneX','Berlin', 133548.84, 'Mark Mustermann');
-ksql> INSERT INTO shipments_stream (rowkey, shipment_id, ship_ts, order_id, delivery) VALUES ('ship-ch83360','ship-ch83360', '2019-03-31T18:13:39Z', "1", 'UPS');
-ksql> INSERT INTO shipment_status_stream (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'in delivery', 'BERLIN');
-ksql> INSERT INTO shipment_status_stream (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'in delivery', 'FRANKFURT');
-ksql> INSERT INTO shipment_status_stream (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'delivered', '@customer');
+ksql> INSERT INTO orders_stream (rowkey, order_ts, shop, product, order_placed, total_amount, customer_name) VALUES ('"10"', '2019-03-29T06:01:18Z', 'Otto', 'iPhoneX','Berlin', 133548.84, 'Mark Mustermann');
+ksql> INSERT INTO shipments_stream (rowkey, shipment_id, shipment_ts, order_id, delivery) VALUES ('"ship-ch83360"','ship-ch83360', '2019-03-31T18:13:39Z', '10', 'UPS');
+ksql> INSERT INTO shipment_statuses_stream (rowkey, shipment_id, status, warehouse) VALUES ('"ship-ch83360"','ship-ch83360', 'in delivery', 'BERLIN');
+ksql> INSERT INTO shipment_statuses_stream (rowkey, shipment_id, status, warehouse) VALUES ('"ship-ch83360"','ship-ch83360', 'in delivery', 'FRANKFURT');
+ksql> INSERT INTO shipment_statuses_stream (rowkey, shipment_id, status, warehouse) VALUES ('"ship-ch83360"','ship-ch83360', 'delivered', '@customer');
 ksql> select * from shipment_statuses_stream emit changes;
 ```
-symetic update to table (topic behind is compacted unlimited retention)
+symmetric update to table (topic behind is compacted unlimited retention)
 ```bash
 ksql> CREATE TABLE shipment_statuses_table AS SELECT
   shipment_id,
@@ -63,7 +63,7 @@ pull query to shipment
 ```bash
 ksql> select * from shipment_statuses_table where rowkey='ship-ch83360';
 ```
-asymetric join
+asymmetric join
 ```bash
 ksql> CREATE STREAM shipments_with_status_stream AS SELECT
   ep.shipment_id as shipment_id,
@@ -77,8 +77,11 @@ ksql> select * from shipments_with_status_stream emit changes;
 ```
 Result seems to be same, but add a new status to shipment ship-ch83360 and you will see stream is not changed
 ```bash
-ksql> INSERT INTO shipment_status (rowkey, shipment_id, status, warehouse) VALUES ('ship-ch83360','ship-ch83360', 'post-update', '@attendee');
+ksql> INSERT INTO shipment_statuses_stream (rowkey, shipment_id, status, warehouse) VALUES ('"ship-ch83360"','ship-ch83360', 'post-update', '@attendee');
+# No change
 ksql> select * from shipments_with_status_stream emit changes;
+# But in table status is seen
+ksql> select * from shipment_statuses_table where rowkey='ship-ch83360';
 ksql> exit
 ````
 End lab6
