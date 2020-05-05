@@ -155,7 +155,7 @@ services:
 
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:5.5.0
-    container_name: worksh0p-ksqldb-server
+    container_name: workshop-ksqldb-server
     depends_on:
       - kafka
       - schema-registry
