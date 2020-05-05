@@ -19,7 +19,7 @@ Check the properties set for ksqlDB. What is the `ksql.service.id`?
 ```bash
 ksql> show properties;
 ```
-Create Payment Stream
+Create Payment Stream and convert it automatically to AVRO.
 ```bash
 ksql> create stream payments(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, CUSTID INTEGER, ACCOUNTID INTEGER, AMOUNT BIGINT, BANK VARCHAR) with(kafka_topic='Payment_Instruction', value_format='avro');
 ```
