@@ -14,8 +14,45 @@ Check Control Center. A new KSQLDB App is visable but it shares the same ksqlDB 
 ```bash
 docker-compose down -v
 vi docker-compose.yml
+# add new cluster
+ksqldb-server1:
+    image: confluentinc/cp-ksqldb-server:5.5.0
+    container_name: workshop-ksqldb-server1
+    depends_on:
+      - kafka
+      - schema-registry
+    volumes:
+      - ./extensions:/etc/ksqldb/ext
+    cpus: 1.0
+    ports:
+      - 8089:8089
+    environment:
+      KSQL_CONFIG_DIR: "/etc/ksqldb"
+      KSQL_KSQL_EXTENSION_DIR: "/etc/ksqldb/ext/"
+      KSQL_CUB_KAFKA_TIMEOUT: 120
+      KSQL_BOOTSTRAP_SERVERS: kafka:29092
+      KSQL_LISTENERS: http://0.0.0.0:8089
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      KSQL_KSQL_SERVICE_ID: workshop_
+      KSQL_KSQL_CONNECT_URL: http://connect-ext:8083
+      # uncomment this one to launch a Connect worker INSIDE the KSQL JVM
+      # KSQL_KSQL_CONNECT_WORKER_CONFIG: /etc/ksql/worker.properties
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_PARTITIONS: 2
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
+      KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+      KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+      KSQL_KSQL_COMMIT_INTERVAL_MS: 2000
+      KSQL_KSQL_CACHE_MAX_BYTES_BUFFERING: 10000000
+    healthcheck:
+      disable: true
+ # and change in control-center KALLE KSQLDB App to Port 8089    
+      CONTROL_CENTER_KSQL_KALLE_ADVERTISED_URL: "http://localhost:8089"
+      CONTROL_CENTER_KSQL_KALLE_URL: "http://ksqldb-server:8089"
 
 ```
+Now, we run two real ksqldb server.
 
 End lab8
 
