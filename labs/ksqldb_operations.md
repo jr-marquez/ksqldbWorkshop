@@ -33,7 +33,7 @@ ksqldb-server1:
       KSQL_BOOTSTRAP_SERVERS: kafka:29092
       KSQL_LISTENERS: http://0.0.0.0:8089
       KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      KSQL_KSQL_SERVICE_ID: workshop_
+      KSQL_KSQL_SERVICE_ID: kalle_
       KSQL_KSQL_CONNECT_URL: http://connect-ext:8083
       # uncomment this one to launch a Connect worker INSIDE the KSQL JVM
       # KSQL_KSQL_CONNECT_WORKER_CONFIG: /etc/ksql/worker.properties
