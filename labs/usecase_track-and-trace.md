@@ -1,6 +1,7 @@
 # Use case TRACK & TRACE
-In retail you will send your orders to your customer, right? For this a shipment have be created and you should able to follow the shipment (and of cource the logistic service partner and your customer too.)
-run ksql
+In retail you will send your orders to your customer, right? For this a shipment have be created and you should able to follow the shipment (and of cource the logistic service partner and your customer too).
+
+run ksql and create DDL for order and later for shipments:
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> CREATE STREAM orders_stream ( order_ts VARCHAR, shop VARCHAR, product VARCHAR, order_placed VARCHAR, total_amount DOUBLE, customer_name VARCHAR)
