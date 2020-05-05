@@ -45,10 +45,10 @@ Before the workshop you will get informed by Confluent with additional informati
 
 * Please prepare yourself
    * Please check the documentation and get an rough overview: [ksqldb](https://www.confluent.io/product/ksql/)
-   * your hardware should be able to run docker-compose and need around 8GB of RAM
+   * your hardware should be able to run docker-compose. Docker needs at least 8GB of your RAM
 
 Note:
-We will ask you before the workshop, if you would like to run on your own environment or you would like to have an environment provisioned by Confluent in the cloud.
+We will ask you before the workshop, if you would like to run on your own environment or if you would like to have an environment provisioned by Confluent in the cloud.
 
 # Hands-on Agenda and Labs:
 0. We will start first with an environment check:
