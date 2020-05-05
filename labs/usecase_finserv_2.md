@@ -35,4 +35,4 @@ ksql> PRINT 'vwap' FROM BEGINNING LIMIT 12;
 
 End of Lab 2
 
-[go back to Agenda](../README.md)
+[go back to Agenda](https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/blob/master/README.md#hands-on-agenda-and-labs)
