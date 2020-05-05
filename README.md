@@ -70,6 +70,8 @@ We will ask you before the workshop, if you would like to run on your own enviro
   * [Real-Time Inventory](labs/usecase_realtime_inventory.md)
   * [Track & Trace / Shipments](labs/usecase_track-and-trace.md)
   * [Distance calculation](labs/usecase_distance.md)
+4. Labs Operations
+  * [Add a KSQLDB App into your environment](labs/ksqldb_operations.md)
 
 We will have a LUNCH Break for 60 Minutes (around 12am) and the workshop will finish around 3pm.
 
