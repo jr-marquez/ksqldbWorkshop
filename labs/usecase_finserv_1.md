@@ -146,7 +146,7 @@ ksql> INSERT INTO payment_statuses SELECT payment_id, status, 'FUNDS' as source_
 ksql> describe payment_statuses;
 ksql> select * from payment_statuses emit changes;
 ```
-Combine payment and status events in 1 hour window
+Combine payment and status events in 1 hour window. Why we need a timing window for stream-stream join?
 ```bash
 ksql> CREATE STREAM payments_with_status AS SELECT
   ep.payment_id as payment_id,
