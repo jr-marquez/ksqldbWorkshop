@@ -34,4 +34,4 @@ ksql> CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
 
 End lab 4
 
-[go back to Agenda](../README.md)
+[go back to Agenda](https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/blob/master/README.md#hands-on-agenda-and-labs)
