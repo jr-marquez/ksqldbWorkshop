@@ -1,5 +1,5 @@
 # Scale KSQLDB
-First of all we add a new KSQLDB App in our Control Center setup:
+First of all we add a new KSQLDB Name in our Control Center setup, but this is not scaling:
 ## Control Center
 ```bash
 docker-compose down -v
@@ -9,13 +9,13 @@ vi docker-compose.yml
       CONTROL_CENTER_KSQL_KALLE_URL: "http://ksqldb-server:8088"
 docker-compose up -d
 ```
-Check Control Center. A new KSQLDB App is visable but it shares the same ksqlDB Server. Create a new Server now.
+Check Control Center. A new KSQLDB App is visible but it shares the same ksqlDB Server. Now, we create a new KSQLDB Cluster for real scaling. In general this is a recommended way, to have for each use case own ksqldb cluster.
 
 ```bash
 docker-compose down -v
 vi docker-compose.yml
 # add new cluster
-ksqldb-server1:
+  ksqldb-server1:
     image: confluentinc/cp-ksqldb-server:5.5.0
     container_name: workshop-ksqldb-server1
     depends_on:
@@ -46,22 +46,60 @@ ksqldb-server1:
       KSQL_KSQL_COMMIT_INTERVAL_MS: 2000
       KSQL_KSQL_CACHE_MAX_BYTES_BUFFERING: 10000000
     healthcheck:
-      disable: true
- # and change in control-center KALLE KSQLDB App to Port 8089    
-      CONTROL_CENTER_KSQL_KALLE_ADVERTISED_URL: "http://localhost:8089"
-      CONTROL_CENTER_KSQL_KALLE_URL: "http://ksqldb-server:8089"
- # as well as depends on in control-center
- depends_on:
+      disable: true 
+ ```     
+ Also change control-center setup to add new ksqldb cluster:
+ ```bash 
+ vi docker-compose.yml
+control-center:
+    image: confluentinc/cp-enterprise-control-center:5.5.0
+    hostname: control-center
+    container_name: workshop-control-center
+    depends_on:
       - zookeeper
       - kafka
       - schema-registry
       - connect-ext
       - ksqldb-server
       - ksqldb-server1
+    cpus: 0.8
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      CONTROL_CENTER_CONNECT_WORKSHOP_CLUSTER: 'http://connect-ext:8083'
+      CONTROL_CENTER_KSQL_WORKSHOP_URL: "http://ksqldb-server:8088"
+      CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http://ksqldb-server:8088
+      CONTROL_CENTER_KSQL_NEWKSQLDB_URL: "http://ksqldb-server1:8089"
+      CONTROL_CENTER_KSQL_NEWKSQLDB_ADVERTISED_URL: http://ksqldb-server1:8089
+      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+      CONTROL_CENTER_INTERNAL_TOPICS_REPLICATION: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_METRICS_TOPIC_PARTITIONS: 1
+      CONTROL_CENTER_METRICS_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 1
+      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_STREAMS_NUM_STREAM_THREADS: 2
+      CONTROL_CENTER_STREAMS_CACHE_MAX_BYTES_BUFFERING: 104857600
+      CONTROL_CENTER_DEPRECATED_VIEWS_ENABLE: "true"
+      CONTROL_CENTER_LOG4J_ROOT_LOGLEVEL: WARN
+      CONTROL_CENTER_REST_LISTENERS: "http://0.0.0.0:9021"
+      PORT: 9021
+````
+Now start docker again and you will see the new cluster in control-center:
+```bash
 docker-compose up -d
-
+# connect to cluster via cli
+# new
+docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server1:8089
+# old
+docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ```
-Now, we run two real ksqldb server. Please have a look [how to scale](https://docs.ksqldb.io/en/latest/operate-and-deploy/capacity-planning/#scaling-ksqldb)
+Now, we run two real ksqldb cluster. Please have a look [how to scale](https://docs.ksqldb.io/en/latest/operate-and-deploy/capacity-planning/#scaling-ksqldb)
 
 End lab8
 
