@@ -36,7 +36,7 @@ docker exec -it workshop-kafka  kafka-topics --create --topic shipment_status --
 docker exec -it workshop-kafka  kafka-topics --create --topic transactions --bootstrap-server localhost:9092
 ```
 
-# Load data
+# Load data local
 For some topics we prepared some data files to loaded into Kafka. These files are used to produce data into topics. Later we will also use connectors and `INSERT Statements`:
 ```bash
 # produce data orders
@@ -48,6 +48,23 @@ docker exec -it workshop-kafka  cat /produce-data/shipment_status.json | kafka-c
 # produce data transactions
 docker exec -it workshop-kafka  cat /produce-data/transactions.json | kafka-console-producer --topic transactions --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
 ```
+# Load data in cloud compute
+For some topics we prepared some data files to loaded into Kafka. These files are used to produce data into topics. Later we will also use connectors and `INSERT Statements`:
+```bash
+login in via ssh
+# bash into kafka broker
+docker exec -it workshop-kafka  bash
+# produce data orders
+cat /produce-data/orders.json | kafka-console-producer --topic orders --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
+# produce data shipments
+cat /produce-data/shipments.json | kafka-console-producer --topic shipments --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
+# produce data shipment statuses
+cat /produce-data/shipment_status.json | kafka-console-producer --topic shipment_status --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
+# produce data transactions
+cat /produce-data/transactions.json | kafka-console-producer --topic transactions --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"
+exit
+```
+
 
 [go back to Agenda](https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/blob/master/README.md#hands-on-agenda-and-labs)
 
