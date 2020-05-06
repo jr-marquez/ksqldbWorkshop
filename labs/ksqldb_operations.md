@@ -99,7 +99,9 @@ docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server1:8089
 # old
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ```
-Now, we run two real ksqldb cluster. Please have a look [how to scale](https://docs.ksqldb.io/en/latest/operate-and-deploy/capacity-planning/#scaling-ksqldb)
+Now, we run two real ksqldb cluster. Again this is the recommended way to on-boarding your use case on a dedicated ksqdb cluster. One use case per ksqldb cluster.
+
+Please have a look [how to scale](https://docs.ksqldb.io/en/latest/operate-and-deploy/capacity-planning/#scaling-ksqldb)
 
 End lab8
 
