@@ -20,6 +20,9 @@ ksql> CREATE STREAM atm_locations_stream ( id VARCHAR,
             WITH (KAFKA_TOPIC='atm_locations',
             VALUE_FORMAT='JSON');
 ksql> SET 'auto.offset.reset'='earliest';
+```
+Now, we can select the data and use a scalar function rto calculate the distance:
+```bash
 ksql> SELECT ID,
         CAST(GEO_DISTANCE(location1->lat, location1->lon, location2->lat, location2->lon, 'KM') AS INT) AS DISTANCE_BETWEEN_1and2_KM
 FROM   atm_locations_stream emit changes;
