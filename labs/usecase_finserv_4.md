@@ -12,7 +12,7 @@ WITH (
   VALUE_FORMAT='JSON');
 ksql> SET 'auto.offset.reset' = 'earliest';
 ```
-build the cache
+build the cache with an aggregate function:
 ```bash
 ksql> CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
   SELECT
