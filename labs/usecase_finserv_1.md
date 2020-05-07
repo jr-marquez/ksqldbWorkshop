@@ -101,7 +101,7 @@ ksql> list tables;
 Check topology of execution stream customer_flat. Is the stream re-partitioned?
 ```bash
 ksql> show queries;
-# choose the right query id
+# choose the right query id - go to Control Center, then cluster area, then ksqlDB area, then ksqlDB Application "workshop", then "running queries" and take the query.id in the bottom
 ksql> explain CSAS_CUSTOMERS_FLAT_0;
 ```
 Select new table
