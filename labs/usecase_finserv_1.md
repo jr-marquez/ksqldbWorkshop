@@ -86,7 +86,7 @@ from customers_cdc
 partition by after->id;
 ksql> describe customers_flat;
 ```
-Create Table
+Create Table "customers" which is based on the newly created stream "customers_flat"
 ```bash
 ksql> CREATE TABLE customers (ROWKEY INTEGER KEY, ID INTEGER, FIRST_NAME VARCHAR, LAST_NAME VARCHAR, EMAIL VARCHAR, GENDER VARCHAR, STATUS360 VARCHAR) WITH(kafka_topic='CUSTOMERS_FLAT', value_format='avro', key='ID');
 ```
