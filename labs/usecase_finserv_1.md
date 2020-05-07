@@ -42,7 +42,7 @@ docker exec -it workshop-mysql mysql -uroot -pconfluent
 mysql> use demo;
 mysql> show tables;
 mysql> select * from CUSTOMERS;
-mysql> exit;
+mysql> exit
 ```
 Create the connector
 ```bash
