@@ -72,7 +72,11 @@ ksql> print 'workshop.demo.CUSTOMERS-cdc' from beginning;
 ksql> CREATE STREAM customers_cdc WITH (kafka_topic='workshop.demo.CUSTOMERS-cdc', value_format='avro');
 ksql> describe customers_cdc;
 ```
-reformat and filter out only relevant data from "customers_cdc" stream into a new stream "customers_flat"
+Now check in Control Center:
+1) that the connector "source_dbz_mysql" is created and running,
+2) check in the ksqldb area the ksqldb flow before you create next streams as running queries.
+
+Reformat and filter out only relevant data from "customers_cdc" stream into a new stream "customers_flat"
 ```bash
 ksql> set 'auto.offset.reset'='earliest';
 ksql> create stream customers_flat with (partitions=1) as
@@ -86,7 +90,7 @@ from customers_cdc
 partition by after->id;
 ksql> describe customers_flat;
 ```
-Create Table "customers" which is based on the newly created stream "customers_flat"
+Create Table CUSTOMERS which is based on the newly created topic CUSTOMERS_FLAT (by stream CUSTOMERS_FLAT)
 ```bash
 ksql> CREATE TABLE customers (ROWKEY INTEGER KEY, ID INTEGER, FIRST_NAME VARCHAR, LAST_NAME VARCHAR, EMAIL VARCHAR, GENDER VARCHAR, STATUS360 VARCHAR) WITH(kafka_topic='CUSTOMERS_FLAT', value_format='avro', key='ID');
 ```
@@ -98,7 +102,9 @@ Topic CUSTOMERS_FLAT belongs to Stream CUSTOMERS_FLAT
 ```bash
 ksql> list tables;
 ```
-Check topology of execution stream customer_flat. Is the stream re-partitioned?
+Table CUSTOMERS is based on the topic CUSTOMERS_FLAT
+
+Check topology of execution stream CUSTOMERS_FLAT. Is the stream re-partitioned?
 ```bash
 ksql> show queries;
 # choose the right query id - go to Control Center, then cluster area, then ksqlDB area, then ksqlDB Application "workshop", then "running queries" and take the query.id in the bottom
@@ -139,6 +145,10 @@ from payments p left join customers c on p.custid = c.id;
 ksql> describe ENRICHED_PAYMENTS;
 ksql> select * from enriched_payments emit changes;
 ```
+Now check in Control Center:
+1) check in the ksqldb area - the running queries. Take a look in the details (SINK: and SOURCE:) of the running queries.
+2) check in the ksqldb area the ksqldb flow to follow the expansion easier
+
 Combining the status streams
 ```bash
 ksql> CREATE STREAM payment_statuses AS SELECT payment_id, status, 'AML' as source_system FROM aml_status;
@@ -163,6 +173,8 @@ ksql> CREATE STREAM payments_with_status AS SELECT
 ksql> describe payments_with_status;
 ksql> select * from payments_with_status emit changes;
 ```
+Check in the ksqldb area the ksqldb flow to follow the expansion easier
+
 Aggregate into consolidated records
 ```bash
 ksql> CREATE TABLE payments_final AS SELECT
