@@ -72,7 +72,7 @@ ksql> print 'workshop.demo.CUSTOMERS-cdc' from beginning;
 ksql> CREATE STREAM customers_cdc WITH (kafka_topic='workshop.demo.CUSTOMERS-cdc', value_format='avro');
 ksql> describe customers_cdc;
 ```
-reformat cdc customers into a new stream
+reformat and filter out only relevant data from "customers_cdc" stream into a new stream "customers_flat"
 ```bash
 ksql> set 'auto.offset.reset'='earliest';
 ksql> create stream customers_flat with (partitions=1) as
