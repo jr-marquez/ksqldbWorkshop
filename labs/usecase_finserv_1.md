@@ -34,7 +34,7 @@ Create the other streams
 ksql> create stream aml_status(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, BANK VARCHAR, STATUS VARCHAR) with(kafka_topic='AML_Status', value_format='avro');
 ksql> create stream funds_status(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, REASON_CODE VARCHAR, STATUS VARCHAR) with(kafka_topic='Funds_Status', value_format='avro');
 ksql> list streams;
-ksql> exit;
+ksql> exit
 ```
 Inspect mysql
 ```bash
