@@ -114,7 +114,7 @@ change data in DB
 ```bash
 docker exec -it workshop-mysql mysql -uroot -pconfluent
 mysql> use demo;
-mysql> update CUSTOMERS set first_name = 'Carsten', last_name='Muetzlitz' where id = 1;
+mysql> update CUSTOMERS set first_name = 'Carsten', last_name='Muetzlitz', gender='Male' where id = 1;
 mysql> exit;
 ```
 check in ksql what was happened
