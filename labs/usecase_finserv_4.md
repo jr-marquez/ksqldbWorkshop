@@ -1,4 +1,4 @@
-# Financial sercices use case: Transaction cache
+# Financial services use case: Transaction cache
 In this lab we will be a transaction case. The the activity on a bankaccount for a specific period:
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
