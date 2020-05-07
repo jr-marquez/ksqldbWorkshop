@@ -26,7 +26,7 @@ You should see in Control Center
 * 1 KSQL APP is running
 * three topics AML_Status, Funds_Status, Payment_Instruction are created and some additional internal topics.
 
-# Create additiional topics
+# Create additional topics
 Open your terminal app (cloud setup to be first login via ssh) and create additional topics, we use them later in workshop:
 ```bash
 docker exec -it workshop-kafka  kafka-topics --create --topic orders --bootstrap-server localhost:9092
