@@ -61,9 +61,9 @@ We will ask you before the workshop, if you would like to run on your own enviro
 1. Intro KSQLDB (PPT) - 30 Min
   * RECAP KSQLDB - short presentation by presenter (10 minutes)
   * What is the structure for today? (20 minutes)
-2. Labs Finacial service
+2. Labs Financial service
   * [Payment Status Check](labs/usecase_finserv_1.md)
-  * [Stock price calculation with Use defined functions](labs/usecase_finserv_2.md)
+  * [Stock price calculation with User defined functions](labs/usecase_finserv_2.md)
   * [Create Stocktrade data](labs/usecase_finserv_3.md)
   * [Transaction cache](/labs/usecase_finserv_4.md)
 3. Labs Retail/Logistics
