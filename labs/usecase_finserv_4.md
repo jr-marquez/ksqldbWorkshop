@@ -28,6 +28,9 @@ ksql> CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
     WINDOW TUMBLING (SIZE 30 DAYS)
   GROUP BY IBAN, `PERIOD`
   EMIT CHANGES;
+```
+Ask for what is happening in the last period in an bank account:  
+```bash
   ksql> select * from TRANSACTIONS_CACHE_TABLE emit changes;
   ksql> SELECT TRANSACTION_PAYLOAD FROM TRANSACTIONS_CACHE_TABLE WHERE ROWKEY='abcd00003|+|2020-04';
   ksql> output json;
