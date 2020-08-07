@@ -147,7 +147,7 @@ ksql> select * from enriched_payments emit changes;
 ```
 Now check in Control Center:
 1) check in the ksqldb area - the running queries. Take a look in the details (SINK: and SOURCE:) of the running queries.
-2) check in the ksqldb area the ksqldb flow to follow the expansion easier
+2) check in the ksqldb area the ksqldb flow to follow the expansion easier. If it is not visible refresh the webpage in browser.
 
 Combining the status streams
 ```bash
