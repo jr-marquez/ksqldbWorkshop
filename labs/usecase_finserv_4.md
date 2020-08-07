@@ -1,5 +1,12 @@
 # Financial services use case: Transaction cache
-In this lab we will be create a transaction case. The the activity on a bankaccount for a specific period:
+In this lab we will be create a transaction case. A typical activity on a bankaccount for a specific period.
+If not prepare already in setup, please create topic and load data:
+```bash
+docker exec -it workshop-kafka  kafka-topics --create --topic transactions --bootstrap-server localhost:9092
+# produce data transactions
+docker exec -it workshop-kafka bash -c 'cat /produce-data/transactions.json | kafka-console-producer --topic transactions --broker-list localhost:9092  --property "parse.key=true" --property "key.separator=:"'
+```
+Create the Stream:
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> print 'transactions' from beginning;
