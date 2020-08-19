@@ -9,7 +9,7 @@ docker-compose ps
 If you are running in the cloud. Login in via ssh to compute:
 ```bash
 ssh -i privkey ec2-user@publicip
-cd confluent-ksqldb-hands-on-workshop-master/
+cd confluent-ksqldb-hands-on-workshop-master/docker/
 docker-compose up -d
 docker-compose ps
 ```
