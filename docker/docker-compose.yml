@@ -67,7 +67,7 @@ services:
 
 
   connect-ext:
-    image: confluentinc/cp-kafka-connect:5.5.0
+    image: confluentinc/cp-kafka-connect:5.5.1
     container_name: workshop-connect-ext
     depends_on:
       - zookeeper
