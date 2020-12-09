@@ -18,18 +18,24 @@ ksql> select * from inventory_stream emit changes;
 Make the most up2date information via stateful table
 ```bash
 ksql> CREATE TABLE inventory_stream_table AS SELECT item, SUM(qty) AS item_qty FROM inventory_stream GROUP BY item emit changes;
+ksql> describe inventory_stream_table;
 ```
-output of our inventory
+output of our inventory via push query
 ```bash
 ksql> select * from inventory_stream_table emit changes;
-ksql> select * from inventory_stream_table where rowkey='iPad4';
-ksql> select * from inventory_stream_table where rowkey='iPhoneX';
-ksql> describe inventory_stream_table ;
-# Where is topic INVENTORY_STREAM_TABLE and what it is?
+```
+output of our inventory via pull query
+```bash
+ksql> select * from inventory_stream_table where item='iPad4';
+ksql> select * from inventory_stream_table where item='iPhoneX';
+```
+Where is topic INVENTORY_STREAM_TABLE and what it is?
+```bash
+ksql> list tables;
 ksql> list topics;
 ksql> exit;
 ````
-Check also the running queries in KSQLDB Gui in Control Center and compare SINK and SOURCE of CTAS_INVENTORY_STREAM_TABLE_5. Is that what you expected?
+Check also the running queries in KSQLDB UI in Control Center and compare SINK and SOURCE of CTAS_INVENTORY_STREAM_TABLE_5. Is that what you expected?
 
 End lab5
 

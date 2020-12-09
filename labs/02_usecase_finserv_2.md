@@ -9,8 +9,8 @@ Start this lab:
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> SHOW FUNCTIONS;
 ksql> DESCRIBE FUNCTION VWAP;
-ksql> CREATE STREAM raw_quotes(ticker varchar, bid int, ask int, bidqty int, askqty int)
-    WITH (kafka_topic='stockquotes', value_format='avro', key='ticker', partitions=1);
+ksql> CREATE STREAM raw_quotes(ticker varchar key, bid int, ask int, bidqty int, askqty int)
+    WITH (kafka_topic='stockquotes', value_format='avro', partitions=1);
 ksql> INSERT INTO raw_quotes (ticker, bid, ask, bidqty, askqty) VALUES ('ZTEST', 15, 25, 100, 100);
 INSERT INTO raw_quotes (ticker, bid, ask, bidqty, askqty) VALUES ('ZVV',   25, 35, 100, 100);
 INSERT INTO raw_quotes (ticker, bid, ask, bidqty, askqty) VALUES ('ZVZZT', 35, 45, 100, 100);
@@ -24,6 +24,7 @@ INSERT INTO raw_quotes (ticker, bid, ask, bidqty, askqty) VALUES ('ZVV',   25, 3
 INSERT INTO raw_quotes (ticker, bid, ask, bidqty, askqty) VALUES ('ZVZZT', 35, 45, 100, 100);
 INSERT INTO raw_quotes (ticker, bid, ask, bidqty, askqty) VALUES ('ZXZZT', 45, 55, 100, 100);
 ksql> SET 'auto.offset.reset' = 'earliest';
+ksql> SELECT * FROM raw_quotes EMIT CHANGES LIMIT 12;
 ksql> SELECT ticker, vwap(bid, bidqty, ask, askqty) AS vwap FROM raw_quotes EMIT CHANGES LIMIT 12;
 ksql> CREATE STREAM vwap WITH (kafka_topic = 'vwap', partitions = 1) AS
     SELECT ticker,

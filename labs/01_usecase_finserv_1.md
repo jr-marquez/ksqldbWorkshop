@@ -21,7 +21,7 @@ ksql> show properties;
 ```
 Create Payment Stream and convert it automatically to AVRO.
 ```bash
-ksql> create stream payments(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, CUSTID INTEGER, ACCOUNTID INTEGER, AMOUNT BIGINT, BANK VARCHAR) with(kafka_topic='Payment_Instruction', value_format='avro');
+ksql> create stream payments(PAYMENT_ID INTEGER KEY, CUSTID INTEGER, ACCOUNTID INTEGER, AMOUNT BIGINT, BANK VARCHAR) with(kafka_topic='Payment_Instruction', value_format='avro');
 ```
 Check your creation with describe and select. You can also use Confluent Control Center for this inspection.
 ```bash
@@ -31,12 +31,12 @@ ksql> select * from payments emit changes;
 ```
 Create the other streams
 ```bash
-ksql> create stream aml_status(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, BANK VARCHAR, STATUS VARCHAR) with(kafka_topic='AML_Status', value_format='avro');
-ksql> create stream funds_status(ROWKEY INTEGER KEY, PAYMENT_ID INTEGER, REASON_CODE VARCHAR, STATUS VARCHAR) with(kafka_topic='Funds_Status', value_format='avro');
+ksql> create stream aml_status(PAYMENT_ID INTEGER KEY, BANK VARCHAR, STATUS VARCHAR) with(kafka_topic='AML_Status', value_format='avro');
+ksql> create stream funds_status(PAYMENT_ID INTEGER KEY, REASON_CODE VARCHAR, STATUS VARCHAR) with(kafka_topic='Funds_Status', value_format='avro');
 ksql> list streams;
 ksql> exit
 ```
-Inspect mysql
+Inspect mysql database content:
 ```bash
 docker exec -it workshop-mysql mysql -uroot -pconfluent
 mysql> use demo;
@@ -44,7 +44,7 @@ mysql> show tables;
 mysql> select * from CUSTOMERS;
 mysql> exit
 ```
-Create the connector
+Create the DB CDC connector to get all data from database. We create the connector as script in ksqlDB:
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> CREATE SOURCE CONNECTOR source_dbz_mysql WITH (
@@ -71,13 +71,32 @@ ksql> describe connector source_dbz_mysql;
 ksql> print 'workshop.demo.CUSTOMERS-cdc' from beginning;
 ksql> CREATE STREAM customers_cdc WITH (kafka_topic='workshop.demo.CUSTOMERS-cdc', value_format='avro');
 ksql> describe customers_cdc;
+ksql> exit
 ```
+Check Schema Registry. What did the connector create:
+```bash
+curl http://localhost:8081/subjects | jq
+# output
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   126  100   126    0     0  10500      0 --:--:-- --:--:-- --:--:-- 10500
+[
+  "workshop.demo.CUSTOMERS-cdc-value",  # This guy was created by CDC connector
+  "Funds_Status-value",
+  "workshop-cdc-value",     # This guy was created by CDC connector
+  "AML_Status-value",
+  "Payment_Instruction-value"
+]
+```
+
 Now check in Control Center:
 1) that the connector "source_dbz_mysql" is created and running,
-2) check in the ksqldb area the ksqldb flow before you create next streams as running queries.
+2) created a couple of topics (3) and 2 subjects
+2) check in the ksqldb area the ksqldb flow before you create next streams as running queries. We have a couple of streams running.
 
 Reformat and filter out only relevant data from "customers_cdc" stream into a new stream "customers_flat"
 ```bash
+docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> set 'auto.offset.reset'='earliest';
 ksql> create stream customers_flat with (partitions=1) as
 select after->id as id,
@@ -92,7 +111,7 @@ ksql> describe customers_flat;
 ```
 Create Table CUSTOMERS which is based on the newly created topic CUSTOMERS_FLAT (by stream CUSTOMERS_FLAT)
 ```bash
-ksql> CREATE TABLE customers (ROWKEY INTEGER KEY, ID INTEGER, FIRST_NAME VARCHAR, LAST_NAME VARCHAR, EMAIL VARCHAR, GENDER VARCHAR, STATUS360 VARCHAR) WITH(kafka_topic='CUSTOMERS_FLAT', value_format='avro', key='ID');
+ksql> CREATE TABLE customers (ID INTEGER PRIMARY KEY, FIRST_NAME VARCHAR, LAST_NAME VARCHAR, EMAIL VARCHAR, GENDER VARCHAR, STATUS360 VARCHAR) WITH(kafka_topic='CUSTOMERS_FLAT', value_format='avro');
 ```
 check streams and see which topics belong to them
 ```bash
@@ -110,20 +129,20 @@ ksql> show queries;
 # choose the right query id - go to Control Center, then cluster area, then ksqlDB area, then ksqlDB Application "workshop", then "running queries" and take the query.id in the bottom
 ksql> explain CSAS_CUSTOMERS_FLAT_0;
 ```
-Select new table
+Select new table with push query:
 ```bash
 ksql> select * from customers emit changes;
 ksql> select * from customers where id=1 emit changes;
 ksql> exit;
 ```
-change data in DB
+change data in DB and check how is update changing Kafka:
 ```bash
 docker exec -it workshop-mysql mysql -uroot -pconfluent
 mysql> use demo;
 mysql> update CUSTOMERS set first_name = 'Carsten', last_name='Muetzlitz', gender='Male' where id = 1;
 mysql> exit;
 ```
-check in ksql what was happened
+check in ksql what has happened
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> set 'auto.offset.reset'='earliest';
@@ -172,6 +191,7 @@ ksql> CREATE STREAM payments_with_status AS SELECT
   FROM enriched_payments ep LEFT JOIN payment_statuses ps WITHIN 1 HOUR ON ep.payment_id = ps.payment_id ;
 ksql> describe payments_with_status;
 ksql> select * from payments_with_status emit changes;
+ksql> select * from payments_with_status emit changes limit 10;
 ```
 Check in the ksqldb area the ksqldb flow to follow the expansion easier
 
@@ -185,18 +205,18 @@ ksql> CREATE TABLE payments_final AS SELECT
   where status is not null
   group by payment_id;
 ksql> describe PAYMENTS_FINAL ;
-ksql> select * from payments_final emit changes limit 5;
+ksql> select * from payments_final emit changes limit 1;
 ```
 Pull queries, check value for a specific payment (snapshot lookup). Pull Query is a Preview feature.
 ```bash
-ksql> select * from payments_final where rowkey=1001;
+ksql> select * from payments_final where payment_id=825241649;
 ksql> exit;
 ```
 Query by REST Call
 ```bash
 curl -X "POST" "http://localhost:8088/query" \
         -H "Content-Type: application/vnd.ksql.v1+json; charset=utf-8" \
-        -d $'{"ksql": "select * from payments_final where rowkey=1001;","streamsProperties": {}}' | jq
+        -d $'{"ksql": "select * from payments_final where payment_id=825241649;","streamsProperties": {}}' | jq
 ```
 list streams via curl
 ```bash
