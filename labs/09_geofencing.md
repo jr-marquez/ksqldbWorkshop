@@ -1,107 +1,109 @@
-# Scale KSQLDB
-First of all we add a new KSQLDB Name in our Control Center setup, but this is not scaling:
-## Control Center
-```bash
-docker-compose down -v
-vi docker-compose.yml
-  # add under control-center in environment
-      CONTROL_CENTER_KSQL_KALLE_ADVERTISED_URL: "http://localhost:8088"
-      CONTROL_CENTER_KSQL_KALLE_URL: "http://ksqldb-server:8088"
-docker-compose up -d
-```
-Check Control Center. A new KSQLDB App is visible but it shares the same ksqlDB Server. Now, we create a new KSQLDB Cluster for real scaling. In general this is a recommended way, to have for each use case own ksqldb cluster.
+# GEO Fencing with ksqlDB
+The demo is copied from [Kafka GeEO Demo developed by Will LaForest](https://github.com/wlaforest/KafkaGeoDemo).
+Please follow explanation on [Kafka GeEO Demo developed by Will LaForest](https://github.com/wlaforest/KafkaGeoDemo).
+To set this up in our environment please do the following steps:
+pre-rq:
+ * java 11 is installed
 
+## Create topics
 ```bash
-docker-compose down -v
-vi docker-compose.yml
-# add new cluster
-  ksqldb-server1:
-    image: confluentinc/cp-ksqldb-server:6.0.1
-    container_name: workshop-ksqldb-server1
-    depends_on:
-      - kafka
-      - schema-registry
-    volumes:
-      - ./extensions:/etc/ksqldb/ext
-    cpus: 1.0
-    ports:
-      - 8089:8089
-    environment:
-      KSQL_CONFIG_DIR: "/etc/ksqldb"
-      KSQL_KSQL_EXTENSION_DIR: "/etc/ksqldb/ext/"
-      KSQL_CUB_KAFKA_TIMEOUT: 120
-      KSQL_BOOTSTRAP_SERVERS: kafka:29092
-      KSQL_LISTENERS: http://0.0.0.0:8089
-      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      KSQL_KSQL_SERVICE_ID: kalle_
-      KSQL_KSQL_CONNECT_URL: http://connect-ext:8083
-      # uncomment this one to launch a Connect worker INSIDE the KSQL JVM
-      # KSQL_KSQL_CONNECT_WORKER_CONFIG: /etc/ksql/worker.properties
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_PARTITIONS: 2
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
-      KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
-      KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      KSQL_KSQL_COMMIT_INTERVAL_MS: 2000
-      KSQL_KSQL_CACHE_MAX_BYTES_BUFFERING: 10000000
-    healthcheck:
-      disable: true 
- ```     
- Also change control-center setup to add new ksqldb cluster:
- ```bash 
- vi docker-compose.yml
-control-center:
-    image: confluentinc/cp-enterprise-control-center:6.0.1
-    hostname: control-center
-    container_name: workshop-control-center
-    depends_on:
-      - zookeeper
-      - kafka
-      - schema-registry
-      - connect-ext
-      - ksqldb-server
-      - ksqldb-server1
-    cpus: 0.8
-    ports:
-      - "9021:9021"
-    environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
-      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      CONTROL_CENTER_CONNECT_WORKSHOP_CLUSTER: 'http://connect-ext:8083'
-      CONTROL_CENTER_KSQL_WORKSHOP_URL: "http://ksqldb-server:8088"
-      CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http://ksqldb-server:8088
-      CONTROL_CENTER_KSQL_NEWKSQLDB_URL: "http://ksqldb-server1:8089"
-      CONTROL_CENTER_KSQL_NEWKSQLDB_ADVERTISED_URL: http://ksqldb-server1:8089
-      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
-      CONTROL_CENTER_INTERNAL_TOPICS_REPLICATION: 1
-      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
-      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_REPLICATION: 1
-      CONTROL_CENTER_METRICS_TOPIC_PARTITIONS: 1
-      CONTROL_CENTER_METRICS_TOPIC_REPLICATION: 1
-      CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 1
-      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
-      CONTROL_CENTER_STREAMS_NUM_STREAM_THREADS: 2
-      CONTROL_CENTER_STREAMS_CACHE_MAX_BYTES_BUFFERING: 104857600
-      CONTROL_CENTER_DEPRECATED_VIEWS_ENABLE: "true"
-      CONTROL_CENTER_LOG4J_ROOT_LOGLEVEL: WARN
-      CONTROL_CENTER_REST_LISTENERS: "http://0.0.0.0:9021"
-      PORT: 9021
-````
-Now start docker again and you will see the new cluster in control-center:
-```bash
+#start environment
 docker-compose up -d
-# connect to cluster via cli
-# new
-docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server1:8089
-# old
+# create topics
+docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --topic bus_raw  --config retention.ms=-1
+docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --topic bus_prepped  --config retention.ms=-1
+```
+
+## Load data
+Now, we can load the data into new topics
+```bash
+# produce bus data
+docker exec -it workshop-kafka bash -c 'tar -Oxzf /produce-data/wmata.csv.tgz | kafka-console-producer --bootstrap-server localhost:9092 --topic bus_raw > /dev/null'
+```
+
+## Create ksqlDB DDL
+Now, we create the object to preprocess the raw data:
+```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
+ksql> SET 'auto.offset.reset'='earliest';
+# GEO Fencing Streams
+ksql> CREATE STREAM FENCE_RAW
+  (ROWKEY VARCHAR KEY, type VARCHAR, "properties" MAP<VARCHAR, VARCHAR>,
+   geometry MAP<VARCHAR, VARCHAR>, _raw_data VARCHAR)
+WITH
+  (kafka_topic='fence_raw', value_format='JSON', PARTITIONS=1);
+ksql> CREATE STREAM FENCE WITH (KAFKA_TOPIC='fence', PARTITIONS=1, REPLICAS=1) AS
+  SELECT *, 1 "UNITY"
+  FROM FENCE_RAW;
+# Bus streams
+ksql> CREATE STREAM BUS_RAW
+    (VehicleID VARCHAR,
+    Lat DOUBLE,
+    Lon DOUBLE,
+    Deviation BIGINT,
+    DateTime VARCHAR,
+    TripID VARCHAR,
+    RouteID VARCHAR,
+    DirectionNum BIGINT,
+    DirectionText VARCHAR,
+    TripHeadSign VARCHAR,
+    TripStartTime VARCHAR,
+    TripEndTime VARCHAR,
+    BlockNumber VARCHAR,
+    LoadTime BIGINT)
+WITH
+    (KAFKA_TOPIC='bus_raw', VALUE_FORMAT='JSON', TIMESTAMP='LoadTime', PARTITIONS=1, REPLICAS=1);
+ksql> CREATE STREAM BUS
+WITH (KAFKA_TOPIC='bus_prepped', TIMESTAMP='DTIME') AS
+    SELECT CAST((b.ROWTIME - STRINGTOTIMESTAMP(TIMESTAMPTOSTRING(b.ROWTIME, 'yyyy-MM-dd'), 'yyyy-MM-dd'))*.1 +
+                UNIX_TIMESTAMP() - 86400000 AS BIGINT) DTIME, 1 UNITY,
+            geo_hash(Lat,Lon,5) geohash, *
+    FROM BUS_RAW b
+    EMIT CHANGES;
+# GEO heat map    
+ksql> CREATE TABLE geo_heat_map AS
+  SELECT windowstart ws, windowend we, geohash, 1 unity, COUNT(*) total
+  FROM  bus
+  WINDOW HOPPING (SIZE 30 SECONDS, ADVANCE BY 10 SECONDS)
+  GROUP BY geohash
+  EMIT CHANGES;
+# Alert  
+ksql> CREATE STREAM ALERT
+WITH (KAFKA_TOPIC='alert') AS
+SELECT f.ROWKEY as F_ROWKEY, b.VEHICLEID, b.Lat, b.Lon, b.TRIPHEADSIGN, b.ROUTEID, b.UNITY, f.UNITY
+FROM BUS b
+INNER JOIN FENCE f WITHIN 7 days
+ON b.UNITY = f.UNITY
+WHERE GEO_CONTAINED(b.Lat, b.Lon, f._RAW_DATA)
+EMIT CHANGES;  
+# calibration
+ksql> CREATE STREAM GEO_HEAT_MAP_STREAM
+      ( ROWKEY VARCHAR KEY,
+        WS BIGINT,
+        WE BIGINT,
+        GEOHASH STRING,
+        UNITY INTEGER,
+        TOTAL BIGINT)
+WITH (KAFKA_TOPIC='GEO_HEAT_MAP', VALUE_FORMAT='JSON');
+ksql> CREATE TABLE MAX_BIN_COUNT as
+    SELECT MAX(TOTAL), UNITY
+    FROM GEO_HEAT_MAP_STREAM
+    GROUP BY UNITY
+    EMIT CHANGES;
+ksql> exit;
 ```
-Now, we run two real ksqldb cluster. Again this is the recommended way to on-boarding your use case on a dedicated ksqdb cluster. One use case per ksqldb cluster.
+## Kafka Event Service
+Starting with config in conf/kesConfig.json, see source here https://github.com/wlaforest/KafkaEventService
+```bash
+java -jar jars/KafkaEventService-1.0.1-fat.jar -conf conf/kesConfig.json
+```
+Check in browser and do geo fencing [Geo Fencing App](http://localhost:8080/home.html)
 
-Please have a look [how to scale](https://docs.ksqldb.io/en/latest/operate-and-deploy/capacity-planning/#scaling-ksqldb)
+## Stop
+Close Kafka Event Service with CTRL+c. Shutdown docker
+```bash
+docker-compose down -v
+```
 
 End lab9
 
