@@ -70,9 +70,11 @@ We will ask you before the workshop, if you would like to run on your own enviro
     * [Real-Time Inventory](labs/05_usecase_realtime_inventory.md)
     * [Track & Trace / Shipments](labs/06_usecase_track-and-trace.md)
     * [Distance calculation](labs/07_usecase_distance.md)
-4. Labs Customer Object - Lab 8
+4. Lab Customer Object - Lab 8
     * [De-Normalize a customer object sourced from a simluated DB](labs/08_ksqldb_customerobject.md)
-5. Labs Operations - Lab 9
+5. Lab Geo Fencing - Lab 9
+    * [Doing GEO Fencing with ksqlDB](labs/09_geofencing.md)
+6. Labs Operations - Lab 10
     * [Add a KSQLDB App into your environment](labs/09_ksqldb_operations.md)
 
 We will have a LUNCH Break for 60 Minutes (around 12am) and the workshop will finish around 3pm.
