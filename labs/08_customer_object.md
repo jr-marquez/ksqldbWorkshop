@@ -306,6 +306,7 @@ EMIT CHANGES;
 ksql> select * from customers_orders_report emit changes;
 ```
 You can compare both ways.
+```bash
 ksql> explain CSAS_CUSTOMERS_ORDERS_REPORT_11;
 # compare it with:
 ksql> explain CSAS_CUSTOMERS_ORDERS_REPORT_OLD_WAY_9;
