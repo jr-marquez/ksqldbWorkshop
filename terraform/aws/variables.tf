@@ -18,7 +18,7 @@ variable "instance_type_resource" {
 }
 
 variable "confluentksqldbdemo" {
-  default = "https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/archive/master.zip"
+  default = "https://github.com/jr-marquez/confluent-ksqldb-hands-on-workshop/archive/master.zip"
 }
 
 variable "instance_count" {
