@@ -18,7 +18,7 @@ variable "instance_type_resource" {
 }
 
 variable "confluentksqldbdemo" {
-  default = "https://github.com/jr-marquez/ksqldbWorkshop/tree/main/archive/main.zip"
+  default = "https://github.com/jr-marquez/ksqldbWorkshop/archive/main.zip"
 }
 
 variable "instance_count" {

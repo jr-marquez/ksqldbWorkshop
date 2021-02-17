@@ -1,5 +1,6 @@
 #!/bin/bash
-yum update -y
+export LC_COLLATE=C
+sudo yum update -y
 yum install wget -y
 yum install unzip -y
 yum install jq -y
@@ -24,17 +25,17 @@ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 # install KSQLDB Demo
 cd /home/ec2-user
 wget ${confluent_ksqldb_demo}
-unzip master.zip
-chown ec2-user:ec2-user -R /home/ec2-user/confluent-ksqldb-hands-on-workshop-master/
-rm master.zip
-chown ec2-user:ec2-user -R confluent-ksqldb-hands-on-workshop-master/*
-cd /home/ec2-user/confluent-ksqldb-hands-on-workshop-master/
+unzip main.zip
+chown ec2-user:ec2-user -R /home/ec2-user/ksqldbWorkshop-main/
+rm main.zip
+chown ec2-user:ec2-user -R ksqldbWorkshop-main/*
+cd /home/ec2-user/ksqldbWorkshop-main/
 rm -rf terraform/
 
 
 # set PUBLIC IP and change the Data in docker-compose.yaml
-cd /home/ec2-user/confluent-ksqldb-hands-on-workshop-master/docker/
-PUBIP=`curl http://169.254.169.254/latest/meta-data/public-ipv4`
+cd /home/ec2-user/ksqldbWorkshop-main/docker/
+PUBIP=`dig +short myip.opendns.com @resolver1.opendns.com`
 SCRIPT1="sed -i 's/CONNECT_REST_ADVERTISED_HOST_NAME: connect-ext/CONNECT_REST_ADVERTISED_HOST_NAME: $PUBIP/g' docker-compose.yml;"
 SCRIPT2="sed -i 's/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/localhost:8088/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/$PUBIP:8088/g' docker-compose.yml;"
 #SCRIPT4="sed -i 's/KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:\/\/kafka:29092,PLAINTEXT_HOST:\/\/localhost:9092/KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:\/\/kafka:29092,PLAINTEXT_HOST:\/\/$PUBIP:9092/g' docker-compose.yml;"
