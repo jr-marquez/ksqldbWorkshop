@@ -24,3 +24,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+terraform/aws/.terraform/plugins/darwin_amd64/terraform-provider-aws_v3.28.0_x5
+terraform/aws/.terraform/plugins/darwin_amd64/terraform-provider-template_v2.2.0_x4
+terraform/aws/terraform.tfstate
+terraform/aws/terraform.tfstate.backup

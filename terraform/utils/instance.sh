@@ -43,4 +43,8 @@ SCRIPT2="sed -i 's/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/localho
 bash -c "$SCRIPT1"
 bash -c "$SCRIPT2"
 #bash -c "$SCRIPT4"
-
+chmod 666 /var/run/docker.sock
+docker login -u ${docker_login} -p ${docker_password}
+docker-compose up -d
+sleep 120
+docker-compose exec oracle /scripts/go_sqlplus.sh /scripts/oracle_setup_docker

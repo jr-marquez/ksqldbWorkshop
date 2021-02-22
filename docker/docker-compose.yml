@@ -202,6 +202,7 @@ services:
     
 
 # Other systems
+
   mysql:
     # *-----------------------------*
     # To connect to the DB: 
@@ -258,8 +259,6 @@ services:
       CONTROL_CENTER_REST_LISTENERS: "http://0.0.0.0:9021"
       PORT: 9021
 
-#      CONTROL_CENTER_STREAMS_CONSUMER_REQUEST_TIMEOUT_MS: "960032"
-
   mongo:
     image: mongo:4.2.5
     hostname: mongo
@@ -295,3 +294,11 @@ services:
       - "9300:9300"
     environment:
       discovery.type: single-node
+  oracle:
+    image: store/oracle/database-enterprise:12.2.0.1
+    hostname: oracle
+    volumes:
+      - ./scripts:/scripts 
+    container_name: oracle
+    ports:
+      - 1521:1521

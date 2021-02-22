@@ -20,7 +20,10 @@ variable "instance_type_resource" {
 variable "confluentksqldbdemo" {
   default = "https://github.com/jr-marquez/ksqldbWorkshop/archive/main.zip"
 }
-
+variable "docker_login" {
+}
+variable "docker_password" {
+}
 variable "instance_count" {
-    default = "1"
+    default = "2"
   }

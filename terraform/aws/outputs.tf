@@ -3,12 +3,21 @@
 ###########################################
 
 output "PublicIPs" {
-  value = tonumber(var.instance_count) >= 1 ? " Public IP Adresses are ${join(",",formatlist("%s", aws_instance.ksqldb-demo.*.public_ip),)} " : "Confluent Cloud Platform on AWS is disabled" 
+    value ="${formatlist(
+    "Public IP = %s", 
+    aws_instance.ksqldb-demo.*.public_ip
+  )}"
 }
 
 output "SSH" {
-  value = tonumber(var.instance_count) >= 1 ? " SSH  Access: ssh -i ~/keys/jrMarquez_terraform.pem ec2-user@${join(",",formatlist("%s", aws_instance.ksqldb-demo.*.public_ip),)} " : "Confluent Cloud Platform on AWS is disabled" 
+  value = "${formatlist(
+    "SSH  Access: ssh -i ~/keys/jrMarquez_terraform.pem ec2-user@%s", 
+    aws_instance.ksqldb-demo.*.public_ip
+  )}"
 }
 output "C3" {
-  value = tonumber(var.instance_count) >= 1 ? " Control Center: http://${join(",",formatlist("%s", aws_instance.ksqldb-demo.*.public_ip),)}:9021" : "Confluent Cloud Platform on AWS is disabled"
+  value = "${formatlist(
+    "Control Center: http://%s:9021", 
+    aws_instance.ksqldb-demo.*.public_ip
+  )}"
 }  
