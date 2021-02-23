@@ -1,0 +1,28 @@
+{
+  "name" : "kafka-connect-oracle-cdc",
+  "version" : "1.0.3",
+  "title" : "Kafka Connect OracleCDC Connector",
+  "description" : "The Confluent Oracle CDC Source Connector is a Premium Confluent connector and requires an additional subscription, specifically for this connector.\n<p>The Oracle CDC Source Connector captures changes in an Oracle database and writes the changes as change event records in Kafka topics. The connector uses Oracle LogMiner to read the database's redo log and requires supplemental logging with \"ALL\" columns. The connector supports Oracle 11c, 12c, and 18c. It supports both container databases and non-container databases, and supports databases running on-premises or in the cloud.\n<p>The connector can be configured to capture a subset of the tables in a single Oracle database. The captured tables are all tables accessible by the user that match an \"include\" pattern and do not match a separate \"exclude\" pattern. The connector can optionally begin by taking a snapshot of each of the tables, to capture all rows in their current state before changes are recorded. The connector then continues by capturing the individual row-level changes committed by database users. It writes these change events to Kafka topics using flexible table-to-topic mapping. By default, all change events from each table are written to a separate Kafka topic.",
+  "owner" : {
+    "username" : "confluentinc",
+    "name" : "Confluent, Inc."
+  },
+  "support" : {
+    "summary" : "This connector is a Confluent Premium Connector and <a href=\"https://www.confluent.io/subscription/\">supported by Confluent</a>. The Confluent Oracle CDC Source Connector requires purchase of a <a href=\"https://www.confluent.io/product/confluent-platform/\">Confluent Platform</a> subscription, including a license to this Premium Connector. You can also use this connector for a 30-day trial without an enterprise license key - after 30 days, you need to purchase a subscription. Please contact your Confluent account manager for details."
+  },
+  "tags" : [ "change data capture", "database", "CDC", "dbms", "relational", "Oracle" ],
+  "features" : {
+    "supported_encodings" : [ "any" ],
+    "single_message_transforms" : true,
+    "confluent_control_center_integration" : true,
+    "kafka_connect_api" : true
+  },
+  "documentation_url" : "https://docs.confluent.io/kafka-connect-oracle-cdc/current/",
+  "docker_image" : { },
+  "license" : [ {
+    "name" : "Confluent Software Evaluation License",
+    "url" : "https://www.confluent.io/software-evaluation-license"
+  } ],
+  "component_types" : [ "source" ],
+  "release_date" : "2021-02-04"
+}
