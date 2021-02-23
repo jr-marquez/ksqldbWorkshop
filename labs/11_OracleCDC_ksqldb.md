@@ -1,11 +1,3 @@
-# Introduction
-This Lab will help understand how Confluent can connect with Oracle Databases using the new Oracle CDC Connector
-First of all run the following command in the ssh session:
-```bash
-docker-compose exec oracle /scripts/go_sqlplus.sh /scripts/oracle_setup_docker
-```
-This will change ArchiveLog to on. Check scipt in scripts folder. 
-
 ## Check Connector
 ```bash
 curl -s -X GET -H 'Content-Type: application/json' http://localhost:8083/connector-plugins | jq '.'
@@ -55,8 +47,9 @@ curl -s -X PUT -H 'Content-Type: application/json'  http://localhost:8083/connec
 Check what is happening in the connector log
 
 ## Check status
+```bash
 curl -s -X GET -H 'Content-Type: application/json' http://localhost:8083/connectors/SimpleOracleCDC/status | jq
-
+```
 ## Insert , update and Delete some data
 Run 
 ```bash

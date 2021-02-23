@@ -6,6 +6,8 @@ yum install unzip -y
 yum install jq -y
 yum install expect -y
 yum install nc -y
+yum install python-pip -y
+pip install pymongo
 # install docker
 yum install -y docker
 # set environment

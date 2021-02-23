@@ -2,7 +2,7 @@
 We have an avro schema in datagen/ for stocks. In this lab we will create datagen conenctor for this. You can use datagen connector to generate your own data.
 check the schema script first
 ```bash
-cd confluent-ksqldb-hands-on-workshop/docker/
+cd ksqldbWorkshop-main/docker/
 cat datagen/stocks_service.avro
 ```
 Create the connector:

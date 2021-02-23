@@ -17,6 +17,8 @@ INSERT INTO customers (id, name, age) VALUES ('7', 'luis', 37);
 INSERT INTO customers (id, name, age) VALUES ('8', 'pedro', 27);
 INSERT INTO customers (id, name, age) VALUES ('9', 'pablo', 59);
 INSERT INTO customers (id, name, age) VALUES ('10', 'peter', 59);
+exit
+exit
 ```
 
 ```bash
@@ -69,6 +71,10 @@ use logistics
 db.createCollection("orders")
 
 db.createCollection("shipments")
+
+exit
+
+exit
 ```
 
 1. Run in another ssh
@@ -89,7 +95,7 @@ db.orders.insert({"customer_id": "7", "order_id": "22", "price": 29.71, "currenc
 
 1. 
 ```bash 
-docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
+docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ```
 
 2. 
@@ -170,6 +176,11 @@ CREATE TABLE customers_by_key AS
     FROM customers 
     GROUP BY id 
     EMIT CHANGES; 
+
+#check id 4
+ksql> select * from customers_by_key emit changes;
+exit
+
 ```
 ### See how the ktable changes
 1. 
@@ -183,11 +194,16 @@ psql -U postgres-user customers
 3. 
 ```bash
 update customers set age=99 where name='ramon';
+
+exit
+exit
 ```
 
 ### Inside ksqldb
 1. 
 ```bash
+docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
+
 select * from customers_by_key emit changes;
 ```
 2. 
