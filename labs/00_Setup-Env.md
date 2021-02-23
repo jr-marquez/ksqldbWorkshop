@@ -2,6 +2,7 @@
 
 Login in via ssh to compute:
 ```bash
+chmod 400 privkey
 ssh -i privkey ec2-user@publicip
 cd ksqldbWorkshop-main/docker/
 docker-compose ps

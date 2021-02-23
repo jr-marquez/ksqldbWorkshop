@@ -3,7 +3,7 @@
 ###########################################
 
 output "PublicIPs" {
-    value ="${formatlist(
+    value = "${formatlist(
     "Public IP = %s", 
     aws_instance.ksqldb-demo.*.public_ip
   )}"

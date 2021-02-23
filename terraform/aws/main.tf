@@ -50,9 +50,4 @@ resource "aws_instance" "ksqldb-demo" {
     volume_type = "gp2"
     volume_size = 50
   }
-
-  tags = {
-    "Name" = "Confluent KSQLDB Demo",
-    "Owner" = "cmutzlitz@confluent.io"
-  }
 }

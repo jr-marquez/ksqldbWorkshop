@@ -93,6 +93,7 @@ CREATE SOURCE CONNECTOR source_dbz_mysql WITH (
 ksql> show connectors;
 ksql> describe connector source_dbz_mysql;
 ksql> print 'workshop.demo.CUSTOMERS-cdc' from beginning;
+```
 ```bash
 CREATE STREAM customers_cdc WITH (kafka_topic='workshop.demo.CUSTOMERS-cdc', value_format='avro');
 ```
