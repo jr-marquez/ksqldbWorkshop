@@ -270,7 +270,18 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mongo-pw
       MONGO_REPLICA_SET_NAME: my-replica-set
     command: --replSet my-replica-set --bind_ip_all
-
+  mongo:
+    image: mongo:4.2.5
+    hostname: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo-user
+      MONGO_INITDB_ROOT_PASSWORD: mongo-pw
+      MONGO_REPLICA_SET_NAME: my-replica-set
+    command: --replSet my-replica-set --bind_ip_all
+    
   postgres:
     image: debezium/postgres:12
     hostname: postgres
@@ -285,15 +296,6 @@ services:
       - ./postgres/custom-config.conf:/etc/postgresql/postgresql.conf
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
 
-  elastic:
-    image: elasticsearch:7.6.2
-    hostname: elastic
-    container_name: elastic
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      discovery.type: single-node
   oracle:
     image: store/oracle/database-enterprise:12.2.0.1
     hostname: oracle
