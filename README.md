@@ -3,20 +3,6 @@ This github project describes a Hands-on Workshop around Confluent KSQLDB. The s
   * Explaining and Introduce KSQLDB
   * Labs: Get to know the environment
 
-# Prerequisites for running environment on own hardware
-For an environment on your hardware (Macos):
-  * Docker Desktop installed, give Docker 8GB of your RAM
-  * curl installed
-  * jq installed (or don't use jq)
-
-For Windows Users
-  * as well docker Desktop installed
-  * Gitbash (Git for windows) installed.
-  * don't use jq (do not know if this available on Windows)
-
-In general we will work mostly on the prompt, with KSQLDB cli. But you can also use Confluent Control Center KSQLDB GUI is most cases.
-
-
 # Hands-on Agenda and Labs:
 0. We will start first with an environment check:
     * [Setup the environment](labs/00_Setup-Env.md)

@@ -21,14 +21,14 @@ ksql> show properties;
 ```
 Create Payment Stream and convert it automatically to AVRO.
 ```bash
-create stream payments( \
-    PAYMENT_ID INTEGER KEY, \
-    CUSTID INTEGER, \
-    ACCOUNTID INTEGER, \
-    AMOUNT BIGINT, \
-    BANK VARCHAR \
-    ) with ( \
-        kafka_topic='Payment_Instruction', \
+create stream payments( 
+    PAYMENT_ID INTEGER KEY, 
+    CUSTID INTEGER, 
+    ACCOUNTID INTEGER, 
+    AMOUNT BIGINT, 
+    BANK VARCHAR 
+    ) with ( 
+        kafka_topic='Payment_Instruction', 
         value_format='avro');
 ```
 Check your creation with describe and select. You can also use Confluent Control Center for this inspection.
@@ -39,21 +39,21 @@ ksql> select * from payments emit changes;
 ```
 Create the other streams
 ```bash
-create stream aml_status ( \
-  PAYMENT_ID INTEGER KEY, \ 
-  BANK VARCHAR, \
-  STATUS VARCHAR \
-  ) with ( \
-    kafka_topic='AML_Status', \
+create stream aml_status ( 
+  PAYMENT_ID INTEGER KEY,  
+  BANK VARCHAR, 
+  STATUS VARCHAR 
+  ) with ( 
+    kafka_topic='AML_Status', 
     value_format='avro');
 ```
 ```bash
-create stream funds_status (\
-  PAYMENT_ID INTEGER KEY,\
-  REASON_CODE VARCHAR, \
-  STATUS VARCHAR \
-  ) with ( \
-    kafka_topic='Funds_Status', \
+create stream funds_status (
+  PAYMENT_ID INTEGER KEY,
+  REASON_CODE VARCHAR, 
+  STATUS VARCHAR 
+  ) with ( 
+    kafka_topic='Funds_Status', 
      value_format='avro');
 ```
 ```bash
@@ -128,14 +128,14 @@ docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> set 'auto.offset.reset'='earliest';
 ```
 ```bash
-create stream customers_flat with (partitions=1) as \
-select after->id as id, \
-       after->first_name as first_name, \
-       after->last_name as last_name, \
-       after->email as email, \
-       after->gender as gender, \
-       after->status360 as status360 \
-from customers_cdc \
+create stream customers_flat with (partitions=1) as 
+select after->id as id, 
+       after->first_name as first_name, 
+       after->last_name as last_name, 
+       after->email as email, 
+       after->gender as gender, 
+       after->status360 as status360 
+from customers_cdc 
 partition by after->id; 
 ```
 ```bash
@@ -144,15 +144,15 @@ ksql> describe customers_flat;
 Create Table CUSTOMERS which is based on the newly created topic CUSTOMERS_FLAT (by stream CUSTOMERS_FLAT)
 
 ```bash
-CREATE TABLE customers ( \
-  ID INTEGER PRIMARY KEY, \ 
-  FIRST_NAME VARCHAR, \
-  LAST_NAME VARCHAR, \
-  EMAIL VARCHAR, \
-  GENDER VARCHAR, \
-  STATUS360 VARCHAR \
-   ) WITH (\ 
-    kafka_topic='CUSTOMERS_FLAT',\ 
+CREATE TABLE customers ( 
+  ID INTEGER PRIMARY KEY, 
+  FIRST_NAME VARCHAR, 
+  LAST_NAME VARCHAR, 
+  EMAIL VARCHAR, 
+  GENDER VARCHAR, 
+  STATUS360 VARCHAR 
+   ) WITH (
+    kafka_topic='CUSTOMERS_FLAT',
     value_format='avro');
 ```
 check streams and see which topics belong to them
@@ -198,17 +198,17 @@ ksql> select * from customers where id=1 emit changes;
 Enriching Payments with Customer details
 
 ```bash
-create stream enriched_payments as select \
-  p.payment_id as payment_id,\
-  p.custid as customer_id,\
-  p.accountid, \
-  p.amount, \
-  p.bank, \
-  c.first_name, \
-  c.last_name, \
-  c.email, \
-  c.status360 \
-  from payments p \
+create stream enriched_payments as select 
+  p.payment_id as payment_id,
+  p.custid as customer_id,
+  p.accountid, 
+  p.amount, 
+  p.bank, 
+  c.first_name, 
+  c.last_name, 
+  c.email, 
+  c.status360 
+  from payments p 
   left join customers c on p.custid = c.id; 
 
 ksql> describe ENRICHED_PAYMENTS;
@@ -230,17 +230,17 @@ ksql> select * from payment_statuses emit changes;
 Combine payment and status events in 1 hour window. Why we need a timing window for stream-stream join?
 
 ```bash
-CREATE STREAM payments_with_status AS SELECT \
-  ep.payment_id as payment_id, \
-  ep.accountid, \
-  ep.amount, \
-  ep.bank, \
-  ep.first_name, \
-  ep.last_name, \
-  ep.email, \
-  ep.status360, \
-  ps.status, \
-  ps.source_system \
+CREATE STREAM payments_with_status AS SELECT 
+  ep.payment_id as payment_id, 
+  ep.accountid,
+  ep.amount, 
+  ep.bank, 
+  ep.first_name, 
+  ep.last_name, 
+  ep.email, 
+  ep.status360, 
+  ps.status, 
+  ps.source_system 
   FROM enriched_payments ep LEFT JOIN payment_statuses ps WITHIN 1 HOUR ON ep.payment_id = ps.payment_id ;
 ```
 ```bash
@@ -253,12 +253,12 @@ Check in the ksqldb area the ksqldb flow to follow the expansion easier
 Aggregate into consolidated records
 
 ```bash
-CREATE TABLE payments_final AS SELECT \
-  payment_id, \
-  histogram(status) as status_counts, \
-  collect_list('{ "system" : "' + source_system + '", "status" : "' + STATUS + '"}') as service_status_list \
-  from payments_with_status \
-  where status is not null \
+CREATE TABLE payments_final AS SELECT 
+  payment_id, 
+  histogram(status) as status_counts, 
+  collect_list('{ "system" : "' + source_system + '", "status" : "' + STATUS + '"}') as service_status_list 
+  from payments_with_status 
+  where status is not null 
   group by payment_id;
 ```
 ```bash

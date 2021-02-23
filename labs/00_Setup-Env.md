@@ -1,41 +1,15 @@
 # Set up the environment for KSQLDB Hands-on Workshop
-on your local machine:
-```bash
-git clone https://github.com/ora0600/confluent-ksqldb-hands-on-workshop.git
-cd confluent-ksqldb-hands-on-workshop/docker/
-```
-Before continue please change the data of produce file in `produce-data` dir. We are working with time windows of 30 days. It would make sense to change all the time data in produce files:
-```bash
-vi produce-data/*
-# change all the time data to the current month. e.g. if you are in Dec 2020 change "ORDER_TS": "2020-04-25T11:58:25Z" to "ORDER_TS": "2020-12-25T11:58:25Z"
-```
-Now, we need to install some more connectors. We use these connectors later with ksqldb.
-Check if mongodb, datagen, elasticsearch, mysql and postgresql connectors are there, if not install it;
-```bash
-ll confluent-hub-components/
-confluent-hub install --component-dir confluent-hub-components --no-prompt debezium/debezium-connector-postgresql:1.1.0
-confluent-hub install --component-dir confluent-hub-components --no-prompt debezium/debezium-connector-mongodb:1.1.0
-confluent-hub install --component-dir confluent-hub-components --no-prompt confluentinc/kafka-connect-elasticsearch:10.0.2
-...
-```
 
-Start the cluster
-```bash
-docker-compose up -d
-docker-compose ps
-```
-If you are running in the cloud. Login in via ssh to compute:
+Login in via ssh to compute:
 ```bash
 ssh -i privkey ec2-user@publicip
-cd confluent-ksqldb-hands-on-workshop-master/docker/
-docker-compose up -d
+cd ksqldbWorkshop-main/docker/
 docker-compose ps
 ```
 All container should be healthy and running.
 
 # Check Confluent Control Centeropen C3
 Open URL in Browser
-* on your local machine: http://localhost:9021/
 * from your local machine connecting to cloud http://publicip:9021/
 
 You should see in Control Center
@@ -53,6 +27,11 @@ docker exec -it workshop-kafka  kafka-topics --create --topic inventory --bootst
 docker exec -it workshop-kafka  kafka-topics --create --topic shipment_status --bootstrap-server localhost:9092
 docker exec -it workshop-kafka  kafka-topics --create --topic transactions --bootstrap-server localhost:9092
 ```
+Run this command to configure the Oracle DB ee 12c. You can check the script here [../docker/scripts/oracle_setup_docker.sql]
+```bash
+docker-compose exec oracle /scripts/go_sqlplus.sh /scripts/oracle_setup_docker
+```
+
 
 # Load data
 For some topics we prepared some data files to loaded into Kafka. These files are used to produce data into topics. Later we will also use connectors and `INSERT Statements`:

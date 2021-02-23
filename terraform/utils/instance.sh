@@ -46,5 +46,3 @@ bash -c "$SCRIPT2"
 chmod 666 /var/run/docker.sock
 docker login -u ${docker_login} -p ${docker_password}
 docker-compose up -d
-sleep 280
-docker-compose exec oracle /scripts/go_sqlplus.sh /scripts/oracle_setup_docker
