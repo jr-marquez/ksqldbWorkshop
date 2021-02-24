@@ -22,6 +22,7 @@ You should see in Control Center
 # Create additional topics
 Open your terminal app (cloud setup to be first login via ssh) and create additional topics, we use them later in workshop:
 ```bash
+cd ksqldbWorkshop-main/docker
 docker exec -it workshop-kafka  kafka-topics --create --topic orders --bootstrap-server localhost:9092
 docker exec -it workshop-kafka  kafka-topics --create --topic shipments --bootstrap-server localhost:9092
 docker exec -it workshop-kafka  kafka-topics --create --topic inventory --bootstrap-server localhost:9092
