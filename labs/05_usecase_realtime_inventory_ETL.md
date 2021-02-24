@@ -245,6 +245,19 @@ CREATE STREAM shipped_orders WITH (
     ON s.order_id = o.order_id 
     EMIT CHANGES;
 ```
+5. Sink data to ElasticSearch 
+```bash
+CREATE SINK CONNECTOR enriched_writer WITH (
+    'connector.class' = 'io.confluent.connect.elasticsearch.ElasticsearchSinkConnector',
+    'connection.url' = 'http://elastic:9200',
+    'type.name' = 'kafka-connect',
+    'topics' = 'shipped_orders'
+);
+```
+check that data arrived
+```bash
+curl http://localhost:9200/shipped_orders/_search?pretty
+```
 End of lab 5
 
 [go back to Agenda](https://github.com/jr-marquez/ksqldbWorkshop/blob/main/README.md#hands-on-agenda-and-labs)
