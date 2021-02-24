@@ -28,6 +28,9 @@ docker exec -it workshop-kafka  kafka-topics --create --topic shipments --bootst
 docker exec -it workshop-kafka  kafka-topics --create --topic inventory --bootstrap-server localhost:9092
 docker exec -it workshop-kafka  kafka-topics --create --topic shipment_status --bootstrap-server localhost:9092
 docker exec -it workshop-kafka  kafka-topics --create --topic transactions --bootstrap-server localhost:9092
+
+docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic ORCLCDB.C__MYUSER.EMP
+docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic SimpleOracleCDC-ORCLCDB-redo-log
 ```
 Run this command to configure the Oracle DB ee 12c. You can check the script here [../docker/scripts/oracle_setup_docker.sql]
 ```bash
