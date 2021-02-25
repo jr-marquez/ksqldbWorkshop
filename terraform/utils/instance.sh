@@ -8,6 +8,12 @@ yum install expect -y
 yum install nc -y
 yum install python-pip -y
 pip install pymongo
+#change to avoid ssh with pem file, only password
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+echo "ec2-user ALL = NOPASSWD : ALL" >> /etc/sudoers
+echo "ec2-user:password" | chpasswd
+systemctl restart sshd.service
+
 # install docker
 yum install -y docker
 # set environment
@@ -40,11 +46,13 @@ cd /home/ec2-user/ksqldbWorkshop-main/docker/
 PUBIP=`dig +short myip.opendns.com @resolver1.opendns.com`
 SCRIPT1="sed -i 's/CONNECT_REST_ADVERTISED_HOST_NAME: connect-ext/CONNECT_REST_ADVERTISED_HOST_NAME: $PUBIP/g' docker-compose.yml;"
 SCRIPT2="sed -i 's/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/localhost:8088/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/$PUBIP:8088/g' docker-compose.yml;"
-#SCRIPT4="sed -i 's/KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:\/\/kafka:29092,PLAINTEXT_HOST:\/\/localhost:9092/KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:\/\/kafka:29092,PLAINTEXT_HOST:\/\/$PUBIP:9092/g' docker-compose.yml;"
+
 # change docker-compose file with public IP for advertised properties 
 bash -c "$SCRIPT1"
 bash -c "$SCRIPT2"
-#bash -c "$SCRIPT4"
+
+#Allow other users to use docker-compose
 chmod 666 /var/run/docker.sock
+# this is because you need to login to download oracle dbs
 docker login -u ${docker_login} -p ${docker_password}
 docker-compose up -d
