@@ -19,7 +19,7 @@ This github project describes a Hands-on Workshop around Confluent KSQLDB. The s
 4. Labs Oracle CDC - Lab 4
     * [Oracle CDC](labs/11_OracleCDC_ksqldb.md)
 5. Lab Monitoring KsqlDB
-    * [Comming soon...]
+    * Please check https://github.com/markteehan/ksqdb-jmx-monitoring
 
 Thanks a lot for attending
 Confluent Team
