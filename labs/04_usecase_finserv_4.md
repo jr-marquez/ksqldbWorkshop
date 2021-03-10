@@ -17,20 +17,32 @@ Create the Stream:
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
 ksql> print 'transactions' from beginning;
-ksq> CREATE STREAM TRANSACTIONS_STREAM (IBAN VARCHAR KEY, SHIPMENT_TS VARCHAR, MOVEMENT_TYPE VARCHAR, ACCOUNT_NUMBER VARCHAR, BANK_CODE VARCHAR,
-  BOOKING_TEXT VARCHAR, AMOUNT DOUBLE, CURRENCY VARCHAR, `PERIOD` VARCHAR )
+```
+```bash
+CREATE STREAM TRANSACTIONS_STREAM 
+  (IBAN VARCHAR KEY, 
+  SHIPMENT_TS VARCHAR, 
+  MOVEMENT_TYPE VARCHAR, 
+  ACCOUNT_NUMBER VARCHAR, 
+  BANK_CODE VARCHAR,
+  BOOKING_TEXT VARCHAR, 
+  AMOUNT DOUBLE, 
+  CURRENCY VARCHAR, 
+  `PERIOD` VARCHAR )
 WITH (
   TIMESTAMP='SHIPMENT_TS',
   TIMESTAMP_FORMAT='yyyy-MM-dd''T''HH:mm:ssX',
   KAFKA_TOPIC='transactions',
   VALUE_FORMAT='JSON');
+```
+```bash
 ksql> SET 'auto.offset.reset' = 'earliest';
 ksql> describe TRANSACTIONS_STREAM;
 ksql> select * from TRANSACTIONS_STREAM emit changes;
 ```
 build the cache with an aggregate function:
 ```bash
-ksql> CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
+CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
   SELECT
     IBAN,
     `PERIOD`,
@@ -47,9 +59,12 @@ ksql> CREATE TABLE TRANSACTIONS_CACHE_TABLE AS
     WINDOW TUMBLING (SIZE 30 DAYS)
   GROUP BY IBAN, `PERIOD`
   EMIT CHANGES;
+```
+```bash
 ksql> describe TRANSACTIONS_CACHE_TABLE;
 ```
-Ask for what is happening in the last period in an bank account:  
+Ask for what is happening in the last period in an bank account:
+
 ```bash
   ksql> select * from TRANSACTIONS_CACHE_TABLE emit changes;
   ksql> SELECT TRANSACTION_PAYLOAD FROM TRANSACTIONS_CACHE_TABLE WHERE KSQL_COL_0='"abcd00003"|+|2020-12';
