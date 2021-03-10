@@ -8,7 +8,7 @@ yum install expect -y
 yum install nc -y
 yum install python-pip -y
 pip install pymongo
-#change to avoid ssh with pem file, only password
+#Avoids using pem file for ssh, only password
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
 echo "ec2-user ALL = NOPASSWD : ALL" >> /etc/sudoers
 echo "ec2-user:password" | chpasswd
@@ -51,7 +51,7 @@ SCRIPT2="sed -i 's/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/localho
 bash -c "$SCRIPT1"
 bash -c "$SCRIPT2"
 
-#Allow other users to use docker-compose
+#Allow all users to use docker-compose
 chmod 666 /var/run/docker.sock
 # this is because you need to login to download oracle dbs
 docker login -u ${docker_login} -p ${docker_password}

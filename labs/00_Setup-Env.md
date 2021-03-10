@@ -2,8 +2,7 @@
 
 Login in via ssh to compute:
 ```bash
-chmod 400 privkey
-ssh -i privkey ec2-user@publicip
+ssh ec2-user@publicip
 cd ksqldbWorkshop-main/docker/
 docker-compose ps
 ```
@@ -24,20 +23,30 @@ Open your terminal app (cloud setup to be first login via ssh) and create additi
 ```bash
 cd ksqldbWorkshop-main/docker
 docker exec -it workshop-kafka  kafka-topics --create --topic orders --bootstrap-server localhost:9092
+```
+```bash
 docker exec -it workshop-kafka  kafka-topics --create --topic shipments --bootstrap-server localhost:9092
+```
+```bash
 docker exec -it workshop-kafka  kafka-topics --create --topic inventory --bootstrap-server localhost:9092
+```
+```bash
 docker exec -it workshop-kafka  kafka-topics --create --topic shipment_status --bootstrap-server localhost:9092
+```
+```bash
 docker exec -it workshop-kafka  kafka-topics --create --topic transactions --bootstrap-server localhost:9092
-
+```
+```bash
 docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic ORCLCDB.C__MYUSER.EMP
+```
+```bash
 docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic SimpleOracleCDC-ORCLCDB-redo-log
 ```
 Run this command to configure the Oracle DB ee 12c. You can check the script here [../docker/scripts/oracle_setup_docker.sql]
+
 ```bash
 docker-compose exec oracle /scripts/go_sqlplus.sh /scripts/oracle_setup_docker
 ```
-
-
 # Load data
 For some topics we prepared some data files to loaded into Kafka. These files are used to produce data into topics. Later we will also use connectors and `INSERT Statements`:
 ```bash

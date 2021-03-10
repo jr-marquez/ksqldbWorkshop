@@ -25,5 +25,5 @@ variable "docker_login" {
 variable "docker_password" {
 }
 variable "instance_count" {
-    default = "2"
+    default = "1"
   }
