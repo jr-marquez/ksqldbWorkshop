@@ -180,22 +180,22 @@ Select new table with push query:
 ```bash
 ksql> select * from customers emit changes;
 ksql> select * from customers where id=1 emit changes;
-ksql> exit;
 ```
-change data in DB and check how is update changing Kafka:
+**Open a new terminal**
+```bash
+ssh ec2-user@publicip
+```
+In the new terminal change data in DB and check how is update changing Kafka:
 ```bash
 docker exec -it workshop-mysql mysql -uroot -pconfluent
 mysql> use demo;
 mysql> update CUSTOMERS set first_name = 'John', last_name='Smith', gender='Male' where id = 1;
 mysql> exit;
 ```
-check in ksql what has happened
-```bash
-docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
+Close the terminal.
 
-ksql> set 'auto.offset.reset'='earliest';
-ksql> select * from customers where id=1 emit changes;
-```
+In the other terminal check in ksql what happened...
+
 Enriching Payments with Customer details
 
 ```bash
@@ -223,15 +223,30 @@ Now check in Control Center:
 
 Combining the status streams
 ```bash
-ksql> CREATE STREAM payment_statuses AS SELECT payment_id, status, 'AML' as source_system FROM aml_status;
-ksql> INSERT INTO payment_statuses SELECT payment_id, status, 'FUNDS' as source_system FROM funds_status;
+CREATE STREAM payment_statuses 
+  AS SELECT 
+    payment_id, 
+    status, 
+    'AML' as source_system 
+  FROM aml_status;
+```
+```bash
+INSERT INTO payment_statuses 
+  SELECT 
+  payment_id, 
+  status, 
+  'FUNDS' as source_system 
+FROM funds_status;
+```
+```bash
 ksql> describe payment_statuses;
 ksql> select * from payment_statuses emit changes;
 ```
-Combine payment and status events in 1 hour window. Why we need a timing window for stream-stream join?
+Combine payment and status events in 1 hour window. **Why we need a timing window for stream-stream join?**
 
 ```bash
-CREATE STREAM payments_with_status AS SELECT 
+CREATE STREAM payments_with_status 
+AS SELECT 
   ep.payment_id as payment_id, 
   ep.accountid,
   ep.amount, 
@@ -242,7 +257,8 @@ CREATE STREAM payments_with_status AS SELECT
   ep.status360, 
   ps.status, 
   ps.source_system 
-  FROM enriched_payments ep LEFT JOIN payment_statuses ps WITHIN 1 HOUR ON ep.payment_id = ps.payment_id ;
+FROM enriched_payments ep 
+  LEFT JOIN payment_statuses ps WITHIN 1 HOUR ON ep.payment_id = ps.payment_id ;
 ```
 ```bash
 ksql> describe payments_with_status;
@@ -267,17 +283,20 @@ CREATE TABLE payments_final AS SELECT
 ksql> describe PAYMENTS_FINAL ;
 ksql> select * from payments_final emit changes limit 1;
 ```
-Pull queries, check value for a specific payment (snapshot lookup). 
+**Pull queries**, check value for a specific payment (snapshot lookup). 
 
 ```bash
-ksql> select * from payments_final where payment_id=825241649;
+ksql> select * from payments_final where payment_id=825636145;
 ksql> exit;
 ```
+**Lets try the REST API**
+
 Query by REST Call
+
 ```bash
 curl -X "POST" "http://localhost:8088/query" \
         -H "Content-Type: application/vnd.ksql.v1+json; charset=utf-8" \
-        -d $'{"ksql": "select * from payments_final where payment_id=825241649;","streamsProperties": {}}' | jq
+        -d $'{"ksql": "select * from payments_final where payment_id=825636145;","streamsProperties": {}}' | jq
 ```
 list streams via curl
 ```bash
