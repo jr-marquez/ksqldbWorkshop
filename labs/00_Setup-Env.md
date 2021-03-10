@@ -42,7 +42,7 @@ docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --
 ```bash
 docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic SimpleOracleCDC-ORCLCDB-redo-log
 ```
-Run this command to configure the Oracle DB ee 12c. You can check the script here [https://github.com/jr-marquez/ksqldbWorkshop/docker/scripts/oracle_setup_docker.sql]
+Run this command to configure the Oracle DB ee 12c. You can check the script here (https://github.com/jr-marquez/ksqldbWorkshop/blob/main/docker/scripts/oracle_setup_docker.sql)
 
 ```bash
 docker-compose exec oracle /scripts/go_sqlplus.sh /scripts/oracle_setup_docker
