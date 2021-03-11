@@ -8,6 +8,7 @@ data "template_file" "confluent_instance" {
   vars = {
     confluent_ksqldb_demo = var.confluentksqldbdemo,
     docker_login=var.docker_login,
-    docker_password=var.docker_password
+    docker_password=var.docker_password,
+    ssh_password=var.ssh_password
   }
 }

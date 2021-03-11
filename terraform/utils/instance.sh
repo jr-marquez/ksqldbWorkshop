@@ -11,7 +11,7 @@ pip install pymongo
 #Avoids using pem file for ssh, only password
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
 echo "ec2-user ALL = NOPASSWD : ALL" >> /etc/sudoers
-echo "ec2-user:password" | chpasswd
+echo "ec2-user:"${ssh_password} | chpasswd
 systemctl restart sshd.service
 
 # install docker

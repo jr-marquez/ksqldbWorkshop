@@ -24,6 +24,8 @@ variable "docker_login" {
 }
 variable "docker_password" {
 }
+variable "ssh_password" {
+}
 variable "instance_count" {
     default = "1"
   }
