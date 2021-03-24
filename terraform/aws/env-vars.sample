@@ -1,8 +1,7 @@
 export TF_VAR_aws_access_key=<ENTER YOUR aws key>
 export TF_VAR_aws_secret_key=<ENTER YOUR aws secret>
 export TF_VAR_aws_region=<ENTER YOUR region>
-export TF_VAR_ssh_key_name=<Enter your sh key name>
 export TF_VAR_instance_count=<Enter your count of instances you want to create>
 export TF_VAR_docker_login=<Enter your docker login -- for the oracle download, please follow with before: https://stackoverflow.com/questions/47887403/pull-access-denied-for-container-registry-oracle-com-database-enterprise>
 export TF_VAR_docker_password=<Enter docker password>
-export TF_VAR_ssh_password=<Enter ssh password>
+export TF_VAR_ssh_password=<Enter ssh password to login to the machines after the creation>

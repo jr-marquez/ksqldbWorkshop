@@ -9,9 +9,6 @@ variable "aws_secret_key" {
 variable "aws_region" {
 }
 
-variable "ssh_key_name" {
-}
-
 variable "instance_type_resource" {
   default = "t2.large"
   # running compute with 2 vCPUs and 8GB RAM should be enough for a demo

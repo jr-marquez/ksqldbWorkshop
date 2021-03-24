@@ -42,7 +42,6 @@ resource "aws_instance" "ksqldb-demo" {
   ami           = "${data.aws_ami.ami.id}"
   count         = var.instance_count
   instance_type = var.instance_type_resource
-  key_name      = var.ssh_key_name
   vpc_security_group_ids = ["${aws_security_group.sec-ksqldb-demo.id}"]
   user_data = data.template_file.confluent_instance.rendered
 

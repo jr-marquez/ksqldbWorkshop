@@ -3,6 +3,11 @@ This github project describes a Hands-on Workshop around Confluent KSQLDB. The s
   * Explaining and Introduce KSQLDB
   * Labs: Get to know the environment
 
+# Running the Workshop
+You have two option to run the Workshop:
+    1. Running the docker-compose.yml file in a local environemnt: [docker-compose.yml](docker/docker-compose.yml)
+    2. Running the Terraform script to create multiple machines in AWS (Class approach) : [Step by Step](terraform/README.md)  
+
 # Hands-on Agenda and Labs:
 0. We will start first with an environment check:
     * [Setup the environment](labs/00_Setup-Env.md)
