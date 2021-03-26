@@ -26,7 +26,7 @@ curl -s -X PUT -H 'Content-Type: application/json'  http://localhost:8083/connec
     "oracle.username": "C##MYUSER",
     "oracle.password": "password",
     "start.from":"snapshot",
-    "table.inclusion.regex":"ORCLCDB\\.C##MYUSER\\.EMP",
+    "table.inclusion.regex":"ORCLCDB\\.C##MYUSER\\.CUSTOMERS",
     "table.exclusion.regex":"",
     "table.topic.name.template": "${fullyQualifiedTableName}",
     "connection.pool.max.size": 20,
