@@ -39,4 +39,4 @@ Check also the running queries in KSQLDB UI in Control Center and compare SINK a
 
 End lab5
 
-[go back to Agenda](https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/blob/master/README.md#hands-on-agenda-and-labs)
+[go back to Agenda](https://github.com/jr-marquez/ksqldbWorkshop/blob/main/README.md#hands-on-agenda-and-labs)
