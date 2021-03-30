@@ -20,7 +20,9 @@ You have two option to run the Workshop:
     * [Create Stocktrade data](labs/03_usecase_finserv_3.md)
     * [Transaction cache](/labs/04_usecase_finserv_4.md)
 3. Labs Retail/Logistics - Lab 5
-    * [Real-Time Inventory](labs/05_usecase_realtime_inventory_ETL.md)
+    * [Real Time ETL](labs/05_usecase_realtime_inventory_ETL.md)
+    * [Real Time Inventory](labs/05_usecase_realtime_inventory.md)
+    * [Calculate Distance](labs/07_usecase_distance.md)
 4. Labs Oracle CDC - Lab 4
     * [Oracle CDC](labs/11_OracleCDC_ksqldb.md)
 5. Lab Monitoring KsqlDB
