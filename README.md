@@ -14,16 +14,16 @@ You have two option to run the Workshop:
 1. Intro KSQLDB (PPT) - 30 Min
     * RECAP KSQLDB - short presentation by presenter (10 minutes)
     * What is the structure for today? (20 minutes)
-2. Labs Financial service - Lab 1 - 4
+2. Labs Financial service
     * [Payment Status Check](labs/01_usecase_finserv_1.md)
     * [Stock price calculation with User defined functions](labs/02_usecase_finserv_2.md)
     * [Create Stocktrade data](labs/03_usecase_finserv_3.md)
     * [Transaction cache](/labs/04_usecase_finserv_4.md)
-3. Labs Retail/Logistics - Lab 5
+3. Labs Retail/Logistics
     * [Real Time ETL](labs/05_usecase_realtime_inventory_ETL.md)
     * [Real Time Inventory](labs/05_usecase_realtime_inventory.md)
     * [Calculate Distance](labs/07_usecase_distance.md)
-4. Labs Oracle CDC - Lab 4
+4. Labs Oracle CDC
     * [Oracle CDC](labs/11_OracleCDC_ksqldb.md)
 5. Lab Monitoring KsqlDB
     * Please check https://github.com/markteehan/ksqdb-jmx-monitoring
