@@ -15,6 +15,7 @@ ksql> SET 'auto.offset.reset' = 'earliest';
 ksql> select * from orders_stream emit changes;
 ksql> describe orders_stream;
 ```
+**Drop stream shipped_orders and terminate query, do it in control center**
 do the same for Shipments
 ```bash
 ksql> CREATE STREAM shipments_stream (shipmentid varchar key, shipment_id VARCHAR, shipment_ts VARCHAR, order_id VARCHAR, delivery VARCHAR)
@@ -47,10 +48,10 @@ ksql> describe shipment_statuses_stream ;
 You can also try to insert data via `insert statements`
 ```bash
 ksql> INSERT INTO orders_stream (orderid, order_ts, shop, product, order_placed, total_amount, customer_name) VALUES ('"10"', '2019-03-29T06:01:18Z', 'Otto', 'iPhoneX','Berlin', 133548.84, 'Mark Mustermann');
-ksql> INSERT INTO shipments_stream (shipmentid, shipment_id, shipment_ts, order_id, delivery) VALUES ('"ship-ch83360"','ship-ch83360', '2019-03-31T18:13:39Z', '10', 'UPS');
-ksql> INSERT INTO shipment_statuses_stream (shipment_id, status, warehouse) VALUES ('ship-ch83360', 'in delivery', 'BERLIN');
-ksql> INSERT INTO shipment_statuses_stream (shipment_id, status, warehouse) VALUES ('ship-ch83360', 'in delivery', 'FRANKFURT');
-ksql> INSERT INTO shipment_statuses_stream (shipment_id, status, warehouse) VALUES ('ship-ch83360', 'delivered', '@customer');
+INSERT INTO shipments_stream (shipmentid, shipment_id, shipment_ts, order_id, delivery) VALUES ('"ship-ch83360"','ship-ch83360', '2019-03-31T18:13:39Z', '10', 'UPS');
+INSERT INTO shipment_statuses_stream (shipment_id, status, warehouse) VALUES ('ship-ch83360', 'in delivery', 'BERLIN');
+INSERT INTO shipment_statuses_stream (shipment_id, status, warehouse) VALUES ('ship-ch83360', 'in delivery', 'FRANKFURT');
+INSERT INTO shipment_statuses_stream (shipment_id, status, warehouse) VALUES ('ship-ch83360', 'delivered', '@customer');
 ksql> select * from shipment_statuses_stream emit changes;
 ```
 symmetric update to table (topic behind is compacted unlimited retention)
@@ -95,4 +96,4 @@ ksql> exit
 ````
 End lab6
 
-[go back to Agenda](https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/blob/master/README.md#hands-on-agenda-and-labs)
+[go back to Agenda](https://github.com/jr-marquez/ksqldbWorkshop/blob/main/README.md#hands-on-agenda-and-labs)

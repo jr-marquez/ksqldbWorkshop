@@ -129,6 +129,8 @@ CREATE SOURCE CONNECTOR logistics_reader WITH (
 ```
 Check connect in control center if both connectors are up and running. 
 
+**Go to control center , terminate the query and drop the table customers** If not an error will appear
+
 Create a stream for all data comming in **Why am I doing this?**
 ```bash
 CREATE STREAM customers WITH ( 
