@@ -22,11 +22,9 @@ You have two option to run the Workshop:
 3. Labs Retail/Logistics
     * [Real Time ETL](labs/05_usecase_realtime_inventory_ETL.md)
     * [Real Time Inventory](labs/05_usecase_realtime_inventory.md)
+    * [Track and Trace](labs/06_usecase_track-and-trace.md)
     * [Calculate Distance](labs/07_usecase_distance.md)
-4. Labs Oracle CDC
-    * [Oracle CDC](labs/11_OracleCDC_ksqldb.md)
-5. Lab Monitoring KsqlDB
-    * Please check https://github.com/markteehan/ksqdb-jmx-monitoring
+
 
 Thanks a lot for attending
 Confluent Team

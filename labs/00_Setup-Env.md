@@ -35,17 +35,7 @@ docker exec -it workshop-kafka  kafka-topics --create --topic shipment_status --
 ```bash
 docker exec -it workshop-kafka  kafka-topics --create --topic transactions --bootstrap-server localhost:9092
 ```
-```bash
-docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic ORCLCDB.C__MYUSER.EMP
-```
-```bash
-docker exec -it workshop-kafka kafka-topics --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic SimpleOracleCDC-ORCLCDB-redo-log
-```
-Run this command to configure the Oracle DB ee 12c. You can check the script here [script](https://github.com/jr-marquez/ksqldbWorkshop/blob/main/docker/scripts/oracle_setup_docker.sql)
 
-```bash
-docker-compose exec oracle /scripts/go_sqlplus.sh /scripts/oracle_setup_docker
-```
 # Load data
 For some topics we prepared some data files to loaded into Kafka. These files are used to produce data into topics. Later we will also use connectors and `INSERT Statements`:
 ```bash
