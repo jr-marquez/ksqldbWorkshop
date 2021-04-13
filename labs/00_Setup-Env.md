@@ -4,7 +4,7 @@ Login in via ssh to compute:
 ```bash
 ssh ec2-user@publicip
 cd ksqldbWorkshop-main/docker/
-docker-compose ps
+docker ps
 ```
 All container should be healthy and running.
 
