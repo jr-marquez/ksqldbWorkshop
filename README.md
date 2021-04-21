@@ -24,6 +24,8 @@ You have two option to run the Workshop:
     * [Real Time Inventory](labs/05_usecase_realtime_inventory.md)
     * [Track and Trace](labs/06_usecase_track-and-trace.md)
     * [Calculate Distance](labs/07_usecase_distance.md)
+4. IoT Lab
+    * [MQTT tracker](labs/mqtt_demo.adoc)
 
 
 Thanks a lot for attending

@@ -4,11 +4,9 @@ services:
   zookeeper:
     container_name: workshop-zookeeper
     image: confluentinc/cp-zookeeper:latest
-    cpus: 0.5
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-
   kafka:
     container_name: workshop-kafka
     image: confluentinc/cp-enterprise-kafka:latest
@@ -52,7 +50,6 @@ services:
   schema-registry:
     image: confluentinc/cp-schema-registry:latest
     container_name: workshop-schema-registry
-    cpus: 0.4
     ports:
       - 8081:8081
     depends_on:
@@ -161,7 +158,6 @@ services:
       - schema-registry
     volumes:
       - ./extensions:/etc/ksqldb/ext
-    cpus: 1.0
     ports:
       - 8088:8088
     environment:
@@ -194,7 +190,6 @@ services:
     # *-----------------------------*
     container_name: workshop-ksqldb-cli
     image: confluentinc/cp-ksqldb-cli:latest
-    cpus: 0.8
     depends_on:
       - ksqldb-server
     entrypoint: /bin/sh
@@ -206,11 +201,10 @@ services:
   mysql:
     # *-----------------------------*
     # To connect to the DB: 
-    #   docker-compose exec mysql bash -c 'mysql -u root -p$MYSQL_ROOT_PASSWORD'
+    #   docker-compose exec workshop-mysql bash -c 'mysql -u root -p$MYSQL_ROOT_PASSWORD'
     # *-----------------------------*
     image: mysql:8.0
     container_name: workshop-mysql
-    cpus: 0.5
     ports:
       - 3306:3306
     environment:
@@ -233,7 +227,6 @@ services:
       - schema-registry
       - connect-ext
       - ksqldb-server
-    cpus: 0.8
     ports:
       - "9021:9021"
     environment:
@@ -269,19 +262,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongo-user
       MONGO_INITDB_ROOT_PASSWORD: mongo-pw
       MONGO_REPLICA_SET_NAME: my-replica-set
-    command: --replSet my-replica-set --bind_ip_all
-  mongo:
-    image: mongo:4.2.5
-    hostname: mongo
-    container_name: mongo
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongo-user
-      MONGO_INITDB_ROOT_PASSWORD: mongo-pw
-      MONGO_REPLICA_SET_NAME: my-replica-set
-    command: --replSet my-replica-set --bind_ip_all
-    
+    command: --replSet my-replica-set --bind_ip_all   
   postgres:
     image: debezium/postgres:12
     hostname: postgres
@@ -295,21 +276,44 @@ services:
     volumes:
       - ./postgres/custom-config.conf:/etc/postgresql/postgresql.conf
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
-
-  #oracle:
-   # image: store/oracle/database-enterprise:12.2.0.1
-    #hostname: oracle
-    #volumes:
-    #  - ./scripts:/scripts 
-    #container_name: oracle
-    #ports:
-    #  - 1521:1521 
+  
   elastic:
-    image: elasticsearch:7.6.2
-    hostname: elastic
+    image: elasticsearch:7.5.0
+    hostname: elasticsearch
     container_name: elastic
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
       discovery.type: single-node
+    command: 
+      - bash 
+      - -c 
+      - |
+        /usr/local/bin/docker-entrypoint.sh & 
+        echo "Waiting for Elasticsearch to start ⏳"
+        while [ $$(curl -s -o /dev/null -w %{http_code} http://localhost:9200/) -eq 000 ] ; do 
+          echo -e $$(date) " Elasticsearch listener HTTP state: " $$(curl -s -o /dev/null -w %{http_code} http://localhost:9200/) " (waiting for != 000)"
+          sleep 5 
+        done
+        curl -XPUT "http://localhost:9200/_template/kafkaconnect/" -H 'Content-Type: application/json' -d'
+        {
+          "index_patterns": "*",
+          "settings": { "number_of_shards": 1, "number_of_replicas": 0 },
+          "mappings": { "dynamic_templates": [
+          { "dates": { "match": "*_TS", "mapping": { "type": "date" } } },
+          { "heights": { "match": "HEIGHT", "mapping": { "type": "float" } } },
+          { "locations": { "match": "LOCATION", "mapping": { "type": "geo_point" } } }
+        ] } }'        
+        sleep infinity
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.0
+    container_name: kibana
+    depends_on:
+      - elastic
+    ports:
+      - 5601:5601
+    environment:
+      xpack.security.enabled: "false"
+      discovery.type: "single-node"

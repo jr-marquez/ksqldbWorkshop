@@ -1,4 +1,3 @@
-
 # Create the database that we'll use to populate data and watch the effect in the binlog
 \! echo creating demo db...
 CREATE DATABASE if not exists demo;
@@ -19,7 +18,20 @@ create table CUSTOMERS (
         create_ts timestamp DEFAULT CURRENT_TIMESTAMP ,
         update_ts timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
+\! echo creating USERS table...
+CREATE TABLE USERS (USERID VARCHAR(255), 
+                    EMAIL  VARCHAR(255), 
+                    SHARE_LOCATION_OPTIN BOOLEAN,
+                    PRIVACY_LOCATION_LAT DOUBLE,
+                    PRIVACY_LOCATION_LON DOUBLE,
+                    PRIVACY_ZONE_KM DOUBLE,
+                    CREATE_TS TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+                    UPDATE_TS TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+\! echo inserting into USERS
+INSERT INTO USERS (USERID, EMAIL, SHARE_LOCATION_OPTIN, PRIVACY_LOCATION_LAT, PRIVACY_LOCATION_LON, PRIVACY_ZONE_KM) VALUES ('rmoff','robin@rmoff.net', TRUE, 53.924729, -1.804453, 0.5);
+INSERT INTO USERS (USERID, EMAIL, SHARE_LOCATION_OPTIN) VALUES ('hugh','hugh@example.com', FALSE);
+INSERT INTO USERS (USERID, EMAIL, SHARE_LOCATION_OPTIN) VALUES ('ivor','ivor@example.com', FALSE);
 \! echo Inserting customers...
 insert into CUSTOMERS (id, first_name, last_name, email, gender, status360, comments) values (1, 'Rica', 'Blaisdell', 'rblaisdell0@rambler.ru', 'Female', 'bronze', 'Universal optimal hierarchy');
 insert into CUSTOMERS (id, first_name, last_name, email, gender, status360, comments) values (2, 'Ruthie', 'Brockherst', 'rbrockherst1@ow.ly', 'Female', 'platinum', 'Reverse-engineered tangible interface');
