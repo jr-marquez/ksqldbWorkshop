@@ -576,5 +576,4 @@ SELECT BS,
 |3                           |Full                        |100                         | 
 ----
 
-
-[go back to Agenda](https://github.com/jr-marquez/ksqldbWorkshop/blob/main/README.md#hands-on-agenda-and-labs)
+link:https://github.com/jr-marquez/ksqldbWorkshop/blob/main/README.md#hands-on-agenda-and-labs[go back to Agenda]
