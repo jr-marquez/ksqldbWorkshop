@@ -578,5 +578,3 @@ SELECT BS,
 
 
 [go back to Agenda](https://github.com/jr-marquez/ksqldbWorkshop/blob/main/README.md#hands-on-agenda-and-labs)
-
-`EOFEOFEOF`
