@@ -1,0 +1,54 @@
+{
+  "targets": {
+    "xenial-amd64": {
+
+      "buildenv": "xenial-amd64",
+      "builddeps": [
+        "build-essential",
+        "python",
+        "curl",
+        "cmake",
+        "pkg-config",
+        "autoconf",
+        "dh-autoreconf",
+        "libcurl4-openssl-dev",
+        "libjansson-dev",
+        "libidn11-dev",
+        "librtmp-dev",
+        "libssl-dev",
+        "libkrb5-dev",
+        "libldap-dev",
+        "libz-dev"
+      ],
+      "buildcmd": [
+          "./bootstrap.sh"
+      ]
+    },
+
+    "xenial-i386": {
+
+      "buildenv": "xenial-i386",
+      "builddeps": [
+        "build-essential",
+        "python",
+        "curl",
+        "cmake",
+        "pkg-config",
+        "autoconf",
+        "dh-autoreconf",
+        "libcurl4-openssl-dev",
+        "libjansson-dev",
+        "libidn11-dev",
+        "librtmp-dev",
+        "libssl-dev",
+        "libkrb5-dev",
+        "libldap-dev",
+        "libz-dev"
+
+      ],
+      "buildcmd": [
+          "./bootstrap.sh"
+      ]
+    }
+  }
+}
