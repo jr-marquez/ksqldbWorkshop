@@ -8,6 +8,8 @@ yum install expect -y
 yum install nc -y
 yum install python-pip -y
 pip install pymongo
+sudo yum group install "Development Tools" -y
+sudo yum install -y librdkafka-devel yajl-devel avro-c-devel
 #Avoids using pem file for ssh, only password
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
 echo "ec2-user ALL = NOPASSWD : ALL" >> /etc/sudoers
@@ -56,3 +58,9 @@ chmod 666 /var/run/docker.sock
 # this is because you need to login to download oracle dbs
 docker login -u ${docker_login} -p ${docker_password}
 docker-compose up -d
+# to install kafkacat
+cd /home/ec2-user/ksqldbWorkshop-main/docker/kafkacat/
+chmod +x configure
+bash configure
+make
+sudo make install

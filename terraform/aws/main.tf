@@ -16,6 +16,13 @@ resource "aws_security_group" "sec-ksqldb-demo" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  # kibana
+  ingress {
+    from_port   = 5601
+    to_port     = 5601
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   # Connect Access
   ingress {
     from_port   = 8083
