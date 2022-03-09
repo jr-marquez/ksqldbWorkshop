@@ -110,7 +110,7 @@ CREATE SOURCE CONNECTOR customers_reader WITH (
     'transforms.unwrap.delete.handling.mode' = 'rewrite' 
 ); 
 ```
-Create another source conector to caputre orders and shippments in real time
+Create another source conector to capture orders and shippments in real time
 ```bash
 CREATE SOURCE CONNECTOR logistics_reader WITH ( 
     'connector.class' = 'io.debezium.connector.mongodb.MongoDbConnector', 
