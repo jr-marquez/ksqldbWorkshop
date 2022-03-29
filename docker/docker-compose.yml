@@ -171,6 +171,7 @@ services:
       KSQL_KSQL_CONNECT_URL: http://connect-ext:8083
       # uncomment this one to launch a Connect worker INSIDE the KSQL JVM
       # KSQL_KSQL_CONNECT_WORKER_CONFIG: /etc/ksql/worker.properties
+      KSQL_KSQL_QUERIES_FILE:
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_PARTITIONS: 2
@@ -262,7 +263,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongo-user
       MONGO_INITDB_ROOT_PASSWORD: mongo-pw
       MONGO_REPLICA_SET_NAME: my-replica-set
-    command: --replSet my-replica-set --bind_ip_all   
+    command: --replSet my-replica-set --bind_ip_all
+
   postgres:
     image: debezium/postgres:12
     hostname: postgres
@@ -275,6 +277,7 @@ services:
       POSTGRES_DB: customers
     volumes:
       - ./postgres/custom-config.conf:/etc/postgresql/postgresql.conf
+      - ./postgres/db-init-scripts:/docker-entrypoint-initdb.d
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
   
   elastic:

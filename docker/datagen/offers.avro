@@ -1,0 +1,37 @@
+{
+        "namespace": "ksql",
+        "name": "payment_aml_status",
+        "type": "record",
+        "fields": [
+                {"name": "OFFER_ID", "type": {
+                    "type": "int",
+                    "arg.properties": {
+                        "iteration": { "start": 1, "restart": 5}
+                    }
+                }},
+                {"name": "OFFER_NAME", "type": {
+                    "type": "string",
+                    "arg.properties": {
+                    "options": [
+                        "new_savings",
+                        "new_checking",
+                        "new_home_loan",
+                        "new_auto_loan",
+                        "no_offer"
+                        ]
+                    }
+                }},
+                {"name": "OFFER_URL", "type": {
+                    "type": "string",
+                    "arg.properties": {
+                    "options": [
+                        "http://google.com.br/magnis/dis/parturient.json",
+                        "https://earthlink.net/in/ante.js",
+                        "https://webs.com/in/ante.jpg",
+                        "http://squidoo.com/venenatis/non/sodales/sed/tincidunt/eu.js",
+                        "https://ezinearticles.com/ipsum/primis/in/faucibus/orci/luctus.html"
+                        ]
+                    }
+                }}
+        ]
+}
