@@ -28,3 +28,7 @@ terraform/aws/.terraform/plugins/darwin_amd64/terraform-provider-aws_v3.28.0_x5
 terraform/aws/.terraform/plugins/darwin_amd64/terraform-provider-template_v2.2.0_x4
 terraform/aws/terraform.tfstate
 terraform/aws/terraform.tfstate.backup
+terraform/aws/variables_ramon.env
+terraform/aws/.terraform/providers/registry.terraform.io/hashicorp/aws/4.8.0/darwin_amd64/terraform-provider-aws_v4.8.0_x5
+terraform/aws/.terraform/providers/registry.terraform.io/hashicorp/template/2.2.0/darwin_amd64/terraform-provider-template_v2.2.0_x4
+terraform/aws/.terraform.lock.hcl
