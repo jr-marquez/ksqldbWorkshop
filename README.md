@@ -17,7 +17,7 @@ You have two option to run the Workshop:
 2. Labs Financial service
     * [Payment Status Check](labs/01_usecase_finserv_1.md)
     * [Stock price calculation with User defined functions](labs/02_usecase_finserv_2.md)
-    * [Create Stocktrade data](labs/03_usecase_finserv_3.md)
+    * [Create personalized banking promotions](labs/03_usecase_finserv_3.md)
 3. Labs Retail/Logistics
     * [Real Time ETL](labs/05_usecase_realtime_inventory_ETL.md)
     * [Real Time Inventory](labs/05_usecase_realtime_inventory.md)
