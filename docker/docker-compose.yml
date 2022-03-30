@@ -263,6 +263,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongo-user
       MONGO_INITDB_ROOT_PASSWORD: mongo-pw
       MONGO_REPLICA_SET_NAME: my-replica-set
+    volumes:
+      - ./mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     command: --replSet my-replica-set --bind_ip_all
 
   postgres:
