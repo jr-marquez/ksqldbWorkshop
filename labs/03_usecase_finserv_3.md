@@ -29,7 +29,7 @@ ksql> print 'customers.public.customers' from beginning;
 
 ksql> SET 'auto.offset.reset' = 'earliest';
 
-ksql> CREATE STREAM customers WITH (
+ksql> CREATE table customers WITH (
     kafka_topic = 'customers.public.customers',
     value_format = 'avro'
 );
