@@ -3,52 +3,45 @@ version: '2.3'
 services:
   zookeeper:
     container_name: workshop-zookeeper
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.2.2
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    
   kafka:
     container_name: workshop-kafka
-    image: confluentinc/cp-enterprise-kafka:latest
+    image: confluentinc/cp-server:7.2.2
     depends_on:
       - zookeeper
     ports:
     # Exposes 9092 for external connections to the broker
     # Use kafka:29092 for connections internal on the docker network
       - 9092:9092
+      - 9101:9101
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_BROKER_RACK: "rack-1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_DELETE_TOPIC_ENABLE: "true"
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:9092
-      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_REPORTER_MAX_REQUEST_SIZE: 1000012
-      # to avoid race condition with c3
-      CONFLUENT_METRICS_REPORTER_TOPIC_CREATE: "true"
-      CONFLUENT_METRICS_ENABLE: 'false'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-      KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
-      KAFKA_LOG4J_LOGGERS: "kafka.controller=WARN,state.change.logger=WARN,kafka.log.LogCleaner=WARN"
-      KAFKA_JMX_PORT: 9991
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      # Schema Validation
-      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:29092
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'true'
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
     volumes:
       - ./produce-data:/produce-data
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:latest
+    image: confluentinc/cp-schema-registry:7.2.2
     container_name: workshop-schema-registry
     ports:
       - 8081:8081
@@ -64,7 +57,7 @@ services:
 
 
   connect-ext:
-    image: confluentinc/cp-kafka-connect:latest
+    image: confluentinc/cp-kafka-connect:7.2.2
     container_name: workshop-connect-ext
     depends_on:
       - zookeeper
@@ -151,7 +144,7 @@ services:
 
 
   ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:latest
+    image: confluentinc/cp-ksqldb-server:7.2.2
     container_name: workshop-ksqldb-server
     depends_on:
       - kafka
@@ -219,7 +212,7 @@ services:
 
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:latest
+    image: confluentinc/cp-enterprise-control-center:7.2.2
     hostname: control-center
     container_name: workshop-control-center
     depends_on:
