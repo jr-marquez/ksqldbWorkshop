@@ -44,7 +44,7 @@ rm -rf terraform/
 
 
 # set PUBLIC IP and change the Data in docker-compose.yaml
-#cd /home/ec2-user/ksqldbWorkshop-main/docker/
+cd /home/ec2-user/ksqldbWorkshop-main/docker/
 #PUBIP=`dig +short myip.opendns.com @resolver1.opendns.com`
 #SCRIPT1="sed -i 's/CONNECT_REST_ADVERTISED_HOST_NAME: connect-ext/CONNECT_REST_ADVERTISED_HOST_NAME: $PUBIP/g' docker-compose.yml;"
 #SCRIPT2="sed -i 's/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/localhost:8088/CONTROL_CENTER_KSQL_WORKSHOP_ADVERTISED_URL: http:\/\/$PUBIP:8088/g' docker-compose.yml;"
