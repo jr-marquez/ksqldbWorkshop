@@ -5,7 +5,7 @@ We are going to build data pipeline which should look like this:
 
 
 Data for this use case is loaded via 3 Connectors. Please check.
-We will create a CDC Conenctor and doing event stream processing, enrichment and more...
+We will create a CDC Conenctor and doing event stream processing, enrichment and more... \
 Start implementing: Login to ksqlcli
 ```bash
 docker exec -it workshop-ksqldb-cli ksql http://ksqldb-server:8088
