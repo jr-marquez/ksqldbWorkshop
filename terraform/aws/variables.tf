@@ -10,8 +10,7 @@ variable "aws_region" {
 }
 
 variable "instance_type_resource" {
-  default = "t2.large"
-  # running compute with 2 vCPUs and 8GB RAM should be enough for a demo
+  default = "t2.xlarge"
 }
 
 variable "confluentksqldbdemo" {

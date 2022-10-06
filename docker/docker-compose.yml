@@ -267,7 +267,7 @@ services:
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
   
   elastic:
-    image: elasticsearch:7.5.0
+    image: elasticsearch:7.6.2
     hostname: elasticsearch
     container_name: elastic
     ports:
@@ -275,34 +275,3 @@ services:
       - "9300:9300"
     environment:
       discovery.type: single-node
-    command: 
-      - bash 
-      - -c 
-      - |
-        /usr/local/bin/docker-entrypoint.sh & 
-        echo "Waiting for Elasticsearch to start ⏳"
-        while [ $$(curl -s -o /dev/null -w %{http_code} http://localhost:9200/) -eq 000 ] ; do 
-          echo -e $$(date) " Elasticsearch listener HTTP state: " $$(curl -s -o /dev/null -w %{http_code} http://localhost:9200/) " (waiting for != 000)"
-          sleep 5 
-        done
-        curl -XPUT "http://localhost:9200/_template/kafkaconnect/" -H 'Content-Type: application/json' -d'
-        {
-          "index_patterns": "*",
-          "settings": { "number_of_shards": 1, "number_of_replicas": 0 },
-          "mappings": { "dynamic_templates": [
-          { "dates": { "match": "*_TS", "mapping": { "type": "date" } } },
-          { "heights": { "match": "HEIGHT", "mapping": { "type": "float" } } },
-          { "locations": { "match": "LOCATION", "mapping": { "type": "geo_point" } } }
-        ] } }'        
-        sleep infinity
-  
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.5.0
-    container_name: kibana
-    depends_on:
-      - elastic
-    ports:
-      - 5601:5601
-    environment:
-      xpack.security.enabled: "false"
-      discovery.type: "single-node"

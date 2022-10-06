@@ -1,3 +1,7 @@
+# Streaming ETL
+The use case blueprint should look like this one:
+![ETL flow](img/ETL.png)
+
 **Open a new terminal using ssh ec2-user@publicip**
 Check collections in mongoDB
 ```bash
@@ -103,7 +107,7 @@ ksql> select * from users_by_key emit changes;
 
 ```bash
 docker exec -it postgres /bin/bash
-psql -U postgres-user users
+psql -U postgres-user customers
 update users set age=99 where name='ramon';
 
 exit
