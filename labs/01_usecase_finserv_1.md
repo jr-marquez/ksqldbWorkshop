@@ -1,4 +1,9 @@
 # Finacial services case: Payment Status check
+
+We are going to build data pipeline which should look like this:
+![Financial Services Use cases as flow](img/Financial_datapipe.png)
+
+
 Data for this use case is loaded via 3 Connectors. Please check.
 We will create a CDC Conenctor and doing event stream processing, enrichment and more...
 Start implementing: Login to ksqlcli
