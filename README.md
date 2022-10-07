@@ -1,4 +1,4 @@
-# Confluent Platform 7.0.1 KSQLDB Hands-on Workshop
+# Confluent Platform 7.2.2 KSQLDB Hands-on Workshop
 This github project describes a Hands-on Workshop around Confluent KSQLDB. The structure of the Hands-on is as followed
   * Explaining and Introduce KSQLDB
   * Labs: Get to know the environment
